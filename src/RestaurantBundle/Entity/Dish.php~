@@ -2,8 +2,6 @@
 
 namespace RestaurantBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -316,46 +314,5 @@ class Dish
     public function getAllergen()
     {
         return $this->allergen;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->menus = new ArrayCollection();
-    }
-
-    /**
-     * Add menu
-     *
-     * @param Menu $menu
-     *
-     * @return Dish
-     */
-    public function addMenu(Menu $menu)
-    {
-        $this->menus[] = $menu;
-
-        return $this;
-    }
-
-    /**
-     * Remove menu
-     *
-     * @param Menu $menu
-     */
-    public function removeMenu(Menu $menu)
-    {
-        $this->menus->removeElement($menu);
-    }
-
-    /**
-     * Get menus
-     *
-     * @return Collection
-     */
-    public function getMenus()
-    {
-        return $this->menus;
     }
 }
