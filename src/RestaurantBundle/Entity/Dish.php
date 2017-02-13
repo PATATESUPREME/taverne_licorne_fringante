@@ -24,7 +24,7 @@ class Dish
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Menu", mappedBy="dishes")
+     * @ORM\ManyToMany(targetEntity="Menu", inversedBy="dishes")
      */
     private $menus;
 
@@ -87,9 +87,9 @@ class Dish
     /**
      * @var array
      *
-     * @ORM\Column(name="allergen", type="array", nullable=true)
+     * @ORM\Column(name="allergens", type="array", nullable=true)
      */
-    private $allergen;
+    private $allergens;
 
 
     /**
@@ -295,27 +295,27 @@ class Dish
     }
 
     /**
-     * Set allergen
+     * Set allergens
      *
-     * @param array $allergen
+     * @param array $allergens
      *
      * @return Dish
      */
-    public function setAllergen($allergen)
+    public function setAllergens($allergens)
     {
-        $this->allergen = $allergen;
+        $this->allergens = $allergens;
 
         return $this;
     }
 
     /**
-     * Get allergen
+     * Get allergens
      *
      * @return array
      */
-    public function getAllergen()
+    public function getAllergens()
     {
-        return $this->allergen;
+        return $this->allergens;
     }
     /**
      * Constructor

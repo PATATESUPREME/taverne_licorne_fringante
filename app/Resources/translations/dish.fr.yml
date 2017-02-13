@@ -1,0 +1,20 @@
+dish_index_link: Liste des plats
+dish_id: Id
+dish_title: Titre
+dish_description: Description
+dish_price: Prix
+dish_status: Status
+dish_home_made: Fait maison
+dish_author: Auteur
+dish_image: Image
+dish_category: Catégorie
+dish_starter: Entrée
+dish_dish: Plat du milieu
+dish_dessert: Dessert
+dish_allergens: Allergènes
+dish_add_allergen: Ajouter un allergène
+dish_new_button: Créer un plat
+dish_new_title: Nouveau plat
+dish_index_title: Liste des plats
+dish_edit_title: Editer un plat
+dish_show_title: Plat

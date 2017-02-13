@@ -46,6 +46,7 @@ class UserController extends Controller
     public function newAction(Request $request)
     {
         $user = new User();
+        $user->setSalt('salt');
         $form = $this->createForm('RestaurantBundle\Form\UserType', $user);
         $form->handleRequest($request);
 

@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * User
  *
- * @ORM\Table(name="cock_user")
+ * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="RestaurantBundle\Repository\UserRepository")
  *
  * @UniqueEntity("email")
@@ -51,6 +51,20 @@ class User implements UserInterface
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="salt", type="string", length=255)
+     */
+    private $salt;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="roles", type="array")
+     */
+    private $roles;
 
 
     /**
@@ -144,18 +158,50 @@ class User implements UserInterface
     }
 
     /**
-     * @return array
+     * Set salt
+     *
+     * @param string $salt
+     *
+     * @return User
      */
-    public function getRoles()
+    public function setSalt($salt)
     {
-        return ['ROLE_ADMIN'];
+        $this->salt = $salt;
+
+        return $this;
     }
 
     /**
+     * Get salt
+     *
      * @return string
      */
     public function getSalt()
     {
-        return 'salt';
+        return $this->salt;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param array $roles
+     *
+     * @return User
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
     }
 }

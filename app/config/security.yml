@@ -2,7 +2,11 @@
 # http://symfony.com/doc/current/security.html
 security:
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_WAITER:      ROLE_USER
+        ROLE_WRITER:      ROLE_WAITER
+        ROLE_REVIEWER:    ROLE_WRITER
+        ROLE_CHIEF:       ROLE_REVIEWER
+        ROLE_ADMIN:       ROLE_CHIEF
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
@@ -15,7 +19,7 @@ security:
                 users:
                     admin:
                         password: $2y$13$JLn.9w9sF3Rf6KNHfyK4ieLUq8mWGfx/4OURiVORe8lJp00BMI06C
-                        roles: 'ROLE_ADMIN'
+                        roles: 'ROLE_SUPER_ADMIN'
         user_db:
             entity:
                 class: RestaurantBundle:User
@@ -37,7 +41,7 @@ security:
                 check_path: /login
             logout:
                 path:   /logout
-                target: /login
+                target: /
 
     encoders:
         Symfony\Component\Security\Core\User\User:
@@ -49,4 +53,7 @@ security:
 
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/front, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/, roles: ROLE_USER }

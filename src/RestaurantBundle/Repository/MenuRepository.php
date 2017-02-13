@@ -10,4 +10,19 @@ namespace RestaurantBundle\Repository;
  */
 class MenuRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @return array
+     */
+    public function findValidMenus()
+    {
+        $qb = $this
+            ->createQueryBuilder('m')
+            ->where('m.status = :status')
+            ->setParameter('status', 'valid')
+            ->orderBy('m.displayOrder')
+            ->getQuery()
+        ;
+
+        return $qb->getResult();
+    }
 }

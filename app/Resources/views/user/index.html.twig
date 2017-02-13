@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block content %}
-    <h1>Users list</h1>
+{% block body %}
+    <h1>{{ 'user_index_title'|trans({}, 'user') }}</h1>
 
-    <table>
+    <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Actions</th>
+                <th>{{ 'user_id'|trans({}, 'user') }}</th>
+                <th>{{ 'user_username'|trans({}, 'user') }}</th>
+                <th>{{ 'user_email'|trans({}, 'user') }}</th>
+                <th>{{ 'action_buttons'|trans({}, 'general') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -19,23 +19,14 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_user_show', { 'id': user.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_user_edit', { 'id': user.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a class="btn btn-default" href="{{ path('admin_user_show', { 'id': user.id }) }}">{{ 'show_button'|trans({}, 'general') }}</a>
+                    <a class="btn btn-info" href="{{ path('admin_user_edit', { 'id': user.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_user_new') }}">Create a new user</a>
-        </li>
-    </ul>
+
+    <a class="btn btn-primary" href="{{ path('admin_user_new') }}">{{ 'user_new_button'|trans({}, 'user') }}</a>
 {% endblock %}

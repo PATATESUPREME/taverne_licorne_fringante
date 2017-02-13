@@ -10,4 +10,18 @@ namespace RestaurantBundle\Repository;
  */
 class DishRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @return array
+     */
+    public function findValidDishes()
+    {
+        $qb = $this
+            ->createQueryBuilder('d')
+            ->where('d.status = :status')
+            ->setParameter('status', 'valid')
+            ->getQuery()
+        ;
+
+        return $qb->getResult();
+    }
 }
