@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'booking_index_title'|trans({}, 'booking') }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ 'booking_id'|trans({}, 'booking') }}</th>
+                <th>{{ 'booking_day'|trans({}, 'booking') }}</th>
+                <th>{{ 'booking_hour'|trans({}, 'booking') }}</th>
+                <th>{{ 'booking_people'|trans({}, 'booking') }}</th>
+                <th>{{ 'booking_email'|trans({}, 'booking') }}</th>
+                <th>{{ 'booking_name'|trans({}, 'booking') }}</th>
+                <th>{{ 'booking_phone'|trans({}, 'booking') }}</th>
+                <th>{{ 'action_buttons'|trans({}, 'general') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for booking in bookings %}
+            <tr>
+                <td><a href="{{ path('booking_show', { 'id': booking.id }) }}">{{ booking.id }}</a></td>
+                <td>{% if booking.day %}{{ booking.day|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if booking.hour %}{{ booking.hour|date('H:i:s') }}{% endif %}</td>
+                <td>{{ booking.peopleBooked }}</td>
+                <td>{{ booking.email }}</td>
+                <td>{{ booking.name }}</td>
+                <td>{{ booking.phone }}</td>
+                <td>
+                    <a class="btn btn-default" href="{{ path('booking_show', { 'id': booking.id }) }}" >{{ 'show_button'|trans({}, 'general') }}</a>
+                    <a class="btn btn-info" href="{{ path('booking_edit', { 'id': booking.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('booking_new') }}">{{ 'booking_new_button'|trans({}, 'booking') }}</a>
+{% endblock %}
