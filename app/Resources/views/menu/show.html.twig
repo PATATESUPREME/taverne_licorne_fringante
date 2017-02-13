@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'menu_show_title'|trans({}, 'menu') }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{{ 'menu_id'|trans({}, 'menu') }}</th>
+                <td>{{ menu.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'menu_title'|trans({}, 'menu') }}</th>
+                <td>{{ menu.title }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'menu_price'|trans({}, 'menu') }}</th>
+                <td>{{ menu.price }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'menu_display_order'|trans({}, 'menu') }}</th>
+                <td>{{ menu.displayOrder }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'menu_status'|trans({}, 'menu') }}</th>
+                <td>{{ menu.status }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'menu_author'|trans({}, 'menu') }}</th>
+                <td>{{ menu.author }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-default" href="{{ path('menu_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+    <a class="btn btn-info" href="{{ path('menu_edit', { 'id': menu.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+    {{ form_start(delete_form) }}
+        <input type="submit" class="btn btn-danger" value="{{ 'delete_button'|trans({}, 'general') }}">
+    {{ form_end(delete_form) }}
+{% endblock %}

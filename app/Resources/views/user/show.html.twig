@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'user_show_title'|trans({}, 'user') }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{{ 'user_id'|trans({}, 'user') }}</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user_username'|trans({}, 'user') }}</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user_email'|trans({}, 'user') }}</th>
+                <td>{{ user.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-default" href="{{ path('admin_user_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+    <a class="btn btn-info" href="{{ path('admin_user_edit', { 'id': user.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+    {{ form_start(delete_form) }}
+        <input type="submit" class="btn btn-danger" value="{{ 'delete_button'|trans({}, 'general') }}">
+    {{ form_end(delete_form) }}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'menu_index_title'|trans({}, 'menu') }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ 'menu_id'|trans({}, 'menu') }}</th>
+                <th>{{ 'menu_title'|trans({}, 'menu') }}</th>
+                <th>{{ 'menu_price'|trans({}, 'menu') }}</th>
+                <th>{{ 'menu_display_order'|trans({}, 'menu') }}</th>
+                <th>{{ 'menu_status'|trans({}, 'menu') }}</th>
+                <th>{{ 'menu_author'|trans({}, 'menu') }}</th>
+                <th>{{ 'action_buttons'|trans({}, 'general') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for menu in menus %}
+            <tr>
+                <td><a href="{{ path('menu_show', { 'id': menu.id }) }}">{{ menu.id }}</a></td>
+                <td>{{ menu.title }}</td>
+                <td>{{ menu.price }}</td>
+                <td>{{ menu.displayOrder }}</td>
+                <td>{{ menu.status }}</td>
+                <td>{{ menu.author }}</td>
+                <td>
+                    <a class="btn btn-default" href="{{ path('menu_show', { 'id': menu.id }) }}">{{ 'show_button'|trans({}, 'general') }}</a>
+                    <a class="btn btn-info" href="{{ path('menu_edit', { 'id': menu.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('menu_new') }}">{{ 'menu_new_button'|trans({}, 'menu') }}</a>
+{% endblock %}

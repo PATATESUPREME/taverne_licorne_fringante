@@ -3,11 +3,66 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('resources/css/bootstrap.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('resources/css/bootstrap-theme.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('resources/css/stylesheet.css') }}" />
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <style>
+            header, article, aside {
+                margin-bottom: 1rem;
+            }
+        </style>
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% trans_default_domain "general" %}
+        {% block menu %}
+            <nav class="navbar navbar-inverse navbar-fixed-top">
+                <div class="min-margin"></div>
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li><a href="{{ path('default_index') }}">{{ 'default_index_link'|trans({}, 'general') }}</a></li>
+                                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                    <li><a href="{{ path('dish_index') }}">{{ 'dish_index_link'|trans({}, 'dish') }}</a></li>
+                                    <li><a href="{{ path('menu_index') }}">{{ 'menu_index_link'|trans({}, 'menu') }}</a></li>
+                                    <li><a href="{{ path('booking_index') }}">{{ 'booking_index_link'|trans({}, 'booking') }}</a></li>
+                                    <li><a href="{{ path('admin_user_index') }}">{{ 'user_index_link'|trans({}, 'user') }}</a></li>
+                                {% endif %}
+                            </ul>
+                        <ul class="login nav navbar-nav navbar-right">
+                            <li>
+                                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                    <a href="" >{{ app.user.username }}</a>
+                                    <a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> {{ 'logout_link'|trans({}, 'security') }}</a>
+                                {% else %}
+                                    <a href="{{ path('login') }}"><span class="glyphicon glyphicon-log-in"></span> {{ 'login_link'|trans({}, 'security') }}</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        {% endblock %}
+
+        <div id="content">
+            {% block body %}{% endblock %}
+        </div>
+
+        {% block javascripts %}
+            <script src="{{ asset('resources/js/jquery.min.js') }}"></script>
+            <script src="{{ asset('resources/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

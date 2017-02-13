@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'dish_index_title'|trans({}, 'dish') }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ 'dish_title'|trans({}, 'dish') }}</th>
+                <th>{{ 'dish_description'|trans({}, 'dish') }}</th>
+                <th>{{ 'dish_price'|trans({}, 'dish') }}</th>
+                <th>{{ 'dish_home_made'|trans({}, 'dish') }}</th>
+                <th>{{ 'dish_author'|trans({}, 'dish') }}</th>
+                <th>{{ 'dish_image'|trans({}, 'dish') }}</th>
+                <th>{{ 'dish_category'|trans({}, 'dish') }}</th>
+                <th>{{ 'dish_allergens'|trans({}, 'dish') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dish in dishes %}
+            <tr>
+                <td><a href="{{ path('dish_show', { 'id': dish.id }) }}">{{ dish.title }}</a></td>
+                <td>{{ dish.description }}</td>
+                <td>{{ dish.price }}</td>
+                <td>{% if dish.homeMade %}Yes{% else %}No{% endif %}</td>
+                <td>{{ dish.author }}</td>
+                <td>{{ dish.image }}</td>
+                <td>{{ dish.category }}</td>
+                <td>{% if dish.allergens %}{{ dish.allergens|join(', ') }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

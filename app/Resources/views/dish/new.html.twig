@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'dish_new_title'|trans({}, 'dish') }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <label class="control-label" for="allergen-fields-list">{{ 'dish_allergens'|trans({}, 'dish') }}</label>
+        <ul class="allergens" data-prototype="{{ form_widget(form.allergens.vars.prototype)|e }}">
+            {% for allergen in form.allergens %}
+                <li>
+                    {{ form_errors(allergen) }}
+                    {{ form_widget(allergen) }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <input type="submit" class="btn btn-primary" value="{{ 'new_button'|trans({}, 'general') }}" />
+    {{ form_end(form) }}
+
+    <a class="btn btn-default" href="{{ path('dish_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script>
+        // Add Allergen
+        var $collectionHolder;
+
+        var $addAllergenLink = $('<a href="#" class="add_allergen_link">{{ 'dish_add_allergen'|trans({}, 'dish') }}</a>');
+        var $newLinkLi = $('<li></li>').append($addAllergenLink);
+
+        jQuery(document).ready(function() {
+            $collectionHolder = $('ul.allergens');
+
+            $collectionHolder.append($newLinkLi);
+
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addAllergenLink.on('click', function(e) {
+                e.preventDefault();
+                addAllergenForm($collectionHolder, $newLinkLi);
+            });
+        });
+
+        function addAllergenForm($collectionHolder, $newLinkLi) {
+            var prototype = $collectionHolder.data('prototype');
+
+            var index = $collectionHolder.data('index');
+
+            var newForm = prototype.replace(/__name__/g, index);
+
+            $collectionHolder.data('index', index + 1);
+
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+        }
+    </script>
+{% endblock %}

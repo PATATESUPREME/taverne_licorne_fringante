@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'user_new_title'|trans({}, 'user') }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+            <input type="submit" class="btn btn-primary" value="{{ 'new_button'|trans({}, 'general') }}" />
+    {{ form_end(form) }}
+
+    <a class="btn btn-default" href="{{ path('admin_user_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'booking_new_title'|trans({}, 'booking') }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <input type="submit" class="btn btn-primary" value="{{ 'new_button'|trans({}, 'general') }}" />
+    {{ form_end(form) }}
+
+    <a class="btn btn-default" href="{{ path('booking_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+{% endblock %}

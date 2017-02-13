@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'user_index_title'|trans({}, 'user') }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ 'user_id'|trans({}, 'user') }}</th>
+                <th>{{ 'user_username'|trans({}, 'user') }}</th>
+                <th>{{ 'user_email'|trans({}, 'user') }}</th>
+                <th>{{ 'action_buttons'|trans({}, 'general') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td><a href="{{ path('admin_user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <a class="btn btn-default" href="{{ path('admin_user_show', { 'id': user.id }) }}">{{ 'show_button'|trans({}, 'general') }}</a>
+                    <a class="btn btn-info" href="{{ path('admin_user_edit', { 'id': user.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <a class="btn btn-primary" href="{{ path('admin_user_new') }}">{{ 'user_new_button'|trans({}, 'user') }}</a>
+{% endblock %}

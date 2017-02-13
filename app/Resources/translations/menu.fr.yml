@@ -1,0 +1,14 @@
+menu_index_link: Liste des menus
+menu_id: Id
+menu_title: Titre
+menu_price: Prix
+menu_display_order: Ordre d'affichage
+menu_author: Auteur
+menu_status: Status
+menu_dishes: Plats
+menu_add_dish: Ajouter un plat
+menu_new_button: Créer un menu
+menu_new_title: Nouveau menu
+menu_edit_title: Editer un menu
+menu_show_title: Menu
+menu_index_title: Liste des menus

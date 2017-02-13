@@ -1,11 +1,29 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/security.html
 security:
+    role_hierarchy:
+        ROLE_WAITER:      ROLE_USER
+        ROLE_WRITER:      ROLE_WAITER
+        ROLE_REVIEWER:    ROLE_WRITER
+        ROLE_CHIEF:       ROLE_REVIEWER
+        ROLE_ADMIN:       ROLE_CHIEF
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
+        chain_provider:
+            chain:
+                providers: [in_memory, user_db]
         in_memory:
-            memory: ~
+            memory:
+                users:
+                    admin:
+                        password: $2y$13$JLn.9w9sF3Rf6KNHfyK4ieLUq8mWGfx/4OURiVORe8lJp00BMI06C
+                        roles: 'ROLE_SUPER_ADMIN'
+        user_db:
+            entity:
+                class: RestaurantBundle:User
+                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -15,10 +33,27 @@ security:
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
+            pattern:    ^/
+            http_basic: ~
+            provider: chain_provider
+            form_login:
+                login_path: /login
+                check_path: /login
+            logout:
+                path:   /logout
+                target: /
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm:            bcrypt
+            cost:                 13
+        RestaurantBundle\Entity\User:
+            algorithm:            bcrypt
+            cost:                 13
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/front, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/, roles: ROLE_USER }

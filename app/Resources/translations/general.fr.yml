@@ -1,0 +1,14 @@
+default_index_title: Bienvenue à la taverne de la licorne fringante !
+default_index_link: Accueil
+default_booking_new_link: Réserver
+action_buttons: Actions
+delete_button: Effacer
+edit_button: Editer
+new_button: Créer
+return_button: Retourner à la liste
+show_button: Afficher
+status: Status
+draft: Brouillon
+in_validation: En cours de validation
+refuse: Refusé
+valid: Validé

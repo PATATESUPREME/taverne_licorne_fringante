@@ -1,0 +1,17 @@
+user_index_link: Liste des utilisateurs
+user_id: Id
+user_username: Nom d'utilisateur
+user_email: Adresse mail
+user_password: Mot de passe
+user_repeat_password: Répéter le mot de passe
+user_roles: Rôle
+role_waiter: Serveur
+role_writer: Editeur
+role_reviewer: Relecteur
+role_chief: Chef
+role_admin: Administrateur
+user_new_button: Créer un utilisateur
+user_new_title: Nouvel utilisateur
+user_edit_title: Editer un utilisateur
+user_index_title: Liste des utilisateurs
+user_show_title: Utilisateur

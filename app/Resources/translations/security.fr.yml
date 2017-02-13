@@ -1,0 +1,5 @@
+login_link: Connection
+logout_link: Déconnection
+security_username: Nom d'utilisateur
+security_password: Mot de passe
+security_login: Se connecter
