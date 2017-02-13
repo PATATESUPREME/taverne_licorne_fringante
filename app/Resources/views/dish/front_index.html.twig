@@ -19,7 +19,7 @@
         <tbody>
         {% for dish in dishes %}
             <tr>
-                <td><a href="{{ path('dish_show', { 'id': dish.id }) }}">{{ dish.title }}</a></td>
+                <td><a href="{{ path('dish_front_show', { 'id': dish.id }) }}">{{ dish.title }}</a></td>
                 <td>{{ dish.description }}</td>
                 <td>{{ dish.price }}</td>
                 <td>{% if dish.homeMade %}Yes{% else %}No{% endif %}</td>

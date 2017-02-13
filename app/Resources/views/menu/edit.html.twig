@@ -17,11 +17,12 @@
         </ul>
 
         <input type="submit" class="btn btn-info" value="{{ 'edit_button'|trans({}, 'general') }}" />
-        <a class="btn btn-default" href="{{ path('menu_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
-        {{ form_start(delete_form) }}
-            <input type="submit" class="btn btn-danger" value="{{ 'delete_button'|trans({}, 'general') }}">
-        {{ form_end(delete_form) }}
     {{ form_end(edit_form) }}
+
+    <a class="btn btn-default" href="{{ path('menu_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+    {{ form_start(delete_form) }}
+        <input type="submit" class="btn btn-danger" value="{{ 'delete_button'|trans({}, 'general') }}">
+    {{ form_end(delete_form) }}
 
 {% endblock %}
 
