@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'user_show_title'|trans({}, 'user') }}</h1>
+{% endblock %}
 
+{% block body %}
     <table class="table">
         <tbody>
             <tr>
@@ -20,9 +22,9 @@
         </tbody>
     </table>
 
-    <a class="btn btn-default" href="{{ path('admin_user_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
-    <a class="btn btn-info" href="{{ path('admin_user_edit', { 'id': user.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+    <a class="btn btn-default float-left mr-1" href="{{ path('admin_user_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+    <a class="btn btn-info float-left mr-1" href="{{ path('admin_user_edit', { 'id': user.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
     {{ form_start(delete_form) }}
-        <input type="submit" class="btn btn-danger" value="{{ 'delete_button'|trans({}, 'general') }}">
+        <input type="submit" class="btn btn-danger float-left mr-1" value="{{ 'delete_button'|trans({}, 'general') }}">
     {{ form_end(delete_form) }}
 {% endblock %}

@@ -2,9 +2,9 @@
 
 namespace RestaurantBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,11 +31,12 @@ class MenuType extends AbstractType
                 'label' => 'menu_display_order',
                 'translation_domain' => 'menu',
             ))
-            ->add('dishes', CollectionType::class, array(
-                'entry_type' => DishType::class,
-                'allow_add'  => true,
-                'allow_delete'  => true,
-                'label' => false,
+            ->add('dishes', EntityType::class, array(
+                'class' => 'RestaurantBundle:Dish',
+                'choice_label' => 'title',
+                'multiple' => true,
+                'expanded' => false,
+                'label' => 'menu_dishes',
                 'translation_domain' => 'menu',
             ))
             ->add('status', ChoiceType::class, array(

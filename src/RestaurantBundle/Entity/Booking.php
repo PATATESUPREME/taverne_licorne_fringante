@@ -22,16 +22,16 @@ class Booking
     private $id;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="day", type="date")
+     * @ORM\Column(name="day", type="string")
      */
     private $day;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="hour", type="time")
+     * @ORM\Column(name="hour", type="string")
      */
     private $hour;
 
@@ -91,7 +91,7 @@ class Booking
     /**
      * Get day
      *
-     * @return \DateTime
+     * @return string
      */
     public function getDay()
     {
@@ -115,7 +115,7 @@ class Booking
     /**
      * Get hour
      *
-     * @return \DateTime
+     * @return string
      */
     public function getHour()
     {

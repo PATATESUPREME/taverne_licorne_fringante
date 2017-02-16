@@ -3,7 +3,6 @@
 namespace RestaurantBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
@@ -18,11 +17,20 @@ class BookingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('day', DateType::class, array(
+            ->add('day', TextType::class, array(
+                'attr' => array(
+                    'class' => 'datepicker',
+                    'readonly' => true
+                ),
+                'data' => (new \DateTime())->format('d/m/Y'),
                 'label' => 'booking_day',
                 'translation_domain' => 'booking',
             ))
-            ->add('hour', TimeType::class, array(
+            ->add('hour', TextType::class, array(
+                'attr' => array(
+                    'class' => 'timepicker',
+                    'readonly' => true
+                ),
                 'label' => 'booking_hour',
                 'translation_domain' => 'booking',
             ))

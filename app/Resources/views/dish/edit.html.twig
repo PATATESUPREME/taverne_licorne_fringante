@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'dish_edit_title'|trans({}, 'dish') }}</h1>
+{% endblock %}
 
+{% block body %}
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
 
@@ -16,13 +18,15 @@
             {% endfor %}
         </ul>
 
-        <input type="submit" class="btn btn-info" value="{{ 'edit_button'|trans({}, 'general') }}" />
+        <input type="submit" class="btn btn-info float-left mr-1" value="{{ 'edit_button'|trans({}, 'general') }}" />
     {{ form_end(edit_form) }}
 
-    <a class="btn btn-default" href="{{ path('dish_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
-    {{ form_start(delete_form) }}
-        <input type="submit" class="btn btn-danger" value="{{ 'delete_button'|trans({}, 'general') }}">
-    {{ form_end(delete_form) }}
+    <a class="btn btn-default float-left mr-1" href="{{ path('dish_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+    {% if is_granted("ROLE_CHIEF") %}
+        {{ form_start(delete_form) }}
+            <input type="submit" class="btn btn-danger float-left mr-1" value="{{ 'delete_button'|trans({}, 'general') }}">
+        {{ form_end(delete_form) }}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

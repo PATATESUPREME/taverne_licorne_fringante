@@ -1,13 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'booking_new_title'|trans({}, 'booking') }}</h1>
+{% endblock %}
 
+{% block body %}
     {{ form_start(form) }}
         {{ form_widget(form) }}
 
-        <input type="submit" class="btn btn-primary" value="{{ 'new_button'|trans({}, 'general') }}" />
+        <input type="submit" class="btn btn-primary float-left mr-1" value="{{ 'new_button'|trans({}, 'general') }}" />
     {{ form_end(form) }}
 
-    <a class="btn btn-default" href="{{ path('booking_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+    <a class="btn btn-default float-left mr-1" href="{{ path('default_index') }}">{{ 'home_button'|trans({}, 'general') }}</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="application/javascript">
+        $( ".datepicker" ).datepicker({
+            format: '{{  'date_format'|trans({}, 'general')  }}'
+
+        });
+
+        $('.timepicker').timepicker({
+            timeFormat: '{{  'hour_format'|trans({}, 'general')  }}',
+            interval: 15,
+            minTime: '8',
+            maxTime: '18',
+            defaultTime: '8',
+            startTime: '8',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+        });
+    </script>
 {% endblock %}

@@ -1,42 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>{{ 'dish_show_title'|trans({}, 'dish') }}</h1>
+{% block header %}
+    <h1>{{ dish.title }}</h1>
+{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>{{ 'dish_title'|trans({}, 'dish') }}</th>
-                <td>{{ dish.title }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'dish_description'|trans({}, 'dish') }}</th>
-                <td>{{ dish.description }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'dish_price'|trans({}, 'dish') }}</th>
-                <td>{{ dish.price }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'dish_home_made'|trans({}, 'dish') }}</th>
-                <td>{% if dish.homeMade %}Yes{% else %}No{% endif %}</td>
-            </tr>
-            <tr>
-                <th>{{ 'dish_author'|trans({}, 'dish') }}</th>
-                <td>{{ dish.author }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'dish_image'|trans({}, 'dish') }}</th>
-                <td>{{ dish.image }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'dish_category'|trans({}, 'dish') }}</th>
-                <td>{{ dish.category }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'dish_allergens'|trans({}, 'dish') }}</th>
-                <td>{% if dish.allergens %}{{ dish.allergens|join(', ') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block body %}
+    <div class="row">
+        <div class="col-4">
+            <img src="" alt="{{ dish.image }}">
+        </div>
+        <div class="col-6">
+            <p><label>{{ 'dish_author'|trans({}, 'dish') }}</label> {{ dish.author }}</p>
+            <p><label>{{ 'dish_category'|trans({}, 'dish') }}</label> {{ dish.category }}</p>
+            <p><label>{{ 'dish_home_made'|trans({}, 'dish') }}</label>
+                {% if dish.homeMade %}
+                    {{ 'yes'|trans({}, 'general') }}
+                {% else %}
+                    {{ 'no'|trans({}, 'general') }}
+                {% endif %}
+            </p>
+            <p><label>{{ 'dish_description'|trans({}, 'dish') }}</label> {{ dish.description }}</p>
+        </div>
+        <div class="col-2">
+            <p class="lead"><label>{{ 'dish_price'|trans({}, 'dish') }}</label> {{ dish.price }} {{ 'money_symbol'|trans({}, 'general') }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label>{{ 'dish_allergens'|trans({}, 'dish') }}</label>
+            <ul>
+                {% for allergen in dish.allergens %}
+                    <li>{{ allergen }}</li>
+                {% endfor %}
+            </ul>
+
+            <a class="btn btn-default" href="{{ path('dish_front_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+        </div>
+    </div>
 {% endblock %}

@@ -1,64 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'menu_new_title'|trans({}, 'menu') }}</h1>
+{% endblock %}
 
+{% block body %}
     {{ form_start(form) }}
         {{ form_widget(form) }}
 
-        {{ dump(form_widget(form.dishes.vars.prototype)) }}
-
-        <label class="control-label" for="dish-fields-list">{{ 'menu_dishes'|trans({}, 'menu') }}</label>
-        <ul class="dishes" data-prototype="{{ form_widget(form.dishes.vars.prototype)|e }}">
-            {% for dish in form.dishes %}
-                <li>
-                    {{ form_errors(dish) }}
-                    {{ form_widget(dish) }}
-                </li>
-            {% endfor %}
-        </ul>
-
-        <input type="submit" class="btn btn-primary" value="{{ 'new_button'|trans({}, 'general') }}" />
+        <input type="submit" class="btn btn-primary float-left mr-1" value="{{ 'new_button'|trans({}, 'general') }}" />
     {{ form_end(form) }}
 
-    <a class="btn btn-default" href="{{ path('menu_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
-{% endblock %}
-
-{% block javascripts %}
-
-    {{ parent() }}
-
-    <script>
-        // Add Dish
-        var $collectionHolder;
-
-        var $addDishLink = $('<a href="#" class="add_dish_link">{{ 'menu_add_dish'|trans({}, 'menu') }}</a>');
-        var $newLinkLi = $('<li></li>').append($addDishLink);
-
-        jQuery(document).ready(function() {
-            $collectionHolder = $('ul.dishes');
-
-            $collectionHolder.append($newLinkLi);
-
-            $collectionHolder.data('index', $collectionHolder.find(':input').length);
-
-            $addDishLink.on('click', function(e) {
-                e.preventDefault();
-                addDishForm($collectionHolder, $newLinkLi);
-            });
-        });
-
-        function addDishForm($collectionHolder, $newLinkLi) {
-            var prototype = $collectionHolder.data('prototype');
-
-            var index = $collectionHolder.data('index');
-
-            var newForm = prototype.replace(/__name__/g, index);
-
-            $collectionHolder.data('index', index + 1);
-
-            var $newFormLi = $('<li></li>').append(newForm);
-            $newLinkLi.before($newFormLi);
-        }
-    </script>
+    <a class="btn btn-default float-left mr-1" href="{{ path('menu_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
 {% endblock %}

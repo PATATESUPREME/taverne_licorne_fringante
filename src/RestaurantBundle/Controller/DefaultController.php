@@ -84,7 +84,7 @@ class DefaultController extends Controller
             $em->persist($booking);
             $em->flush($booking);
 
-            return $this->redirectToRoute('booking_show', array('id' => $booking->getId()));
+            return $this->redirectToRoute('default_index');
         }
 
         return $this->render('booking/front_new.html.twig', array(

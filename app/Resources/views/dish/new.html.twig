@@ -16,10 +16,10 @@
             {% endfor %}
         </ul>
 
-        <input type="submit" class="btn btn-primary" value="{{ 'new_button'|trans({}, 'general') }}" />
+        <input type="submit" class="btn btn-primary float-left mr-1" value="{{ 'new_button'|trans({}, 'general') }}" />
     {{ form_end(form) }}
 
-    <a class="btn btn-default" href="{{ path('dish_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+    <a class="btn btn-default float-left mr-1" href="{{ path('dish_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
 {% endblock %}
 
 {% block javascripts %}
@@ -47,7 +47,13 @@
         });
 
         function addAllergenForm($collectionHolder, $newLinkLi) {
-            var prototype = $collectionHolder.data('prototype');
+            var prototype =
+                '<input type="text" '
+            +   'id="form_allergens___name__" '
+            +   'name="form[allergens][__name__]" '
+            +   'value=""'
+            +   '/>'
+                ;
 
             var index = $collectionHolder.data('index');
 

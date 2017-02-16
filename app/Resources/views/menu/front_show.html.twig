@@ -1,22 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>{{ 'menu_show_title'|trans({}, 'menu') }}</h1>
+{% block header %}
+    <h1>{{ menu.title }}</h1>
+{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>{{ 'menu_title'|trans({}, 'menu') }}</th>
-                <td>{{ menu.title }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'menu_price'|trans({}, 'menu') }}</th>
-                <td>{{ menu.price }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'menu_author'|trans({}, 'menu') }}</th>
-                <td>{{ menu.author }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block body %}
+    <div class="row">
+        <div class="col-9">
+            <p>{{ 'menu_author_front'|trans({'%author%': menu.author}, 'menu') }}</p>
+        </div>
+        <div class="col-3">
+            <p class="lead"><label>{{ 'menu_price'|trans({}, 'menu') }}</label> {{ menu.price }} {{ 'money_symbol'|trans({}, 'general') }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label>{{ 'menu_dishes'|trans({}, 'menu') }}</label>
+            <table class="table">
+                <tbody>
+                </tbody>
+            </table>
+
+            <a class="btn btn-default" href="{{ path('menu_front_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+        </div>
+    </div>
 {% endblock %}
