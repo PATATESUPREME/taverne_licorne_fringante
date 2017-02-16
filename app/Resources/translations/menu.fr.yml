@@ -12,5 +12,6 @@ menu_new_title: Nouveau menu
 menu_edit_title: Editer un menu
 menu_show_title: Menu
 menu_index_title: Liste des menus
-menu_card_text: Venez déguter un plat de %author% pour seulement %price% €.
+menu_card_text: Venez déguster un plat de %author% pour seulement %price% €.
 menu_author_front: Menu créé par %author%.
+menu_dishes_placeholder: Ecrire pour rechercher un plat

@@ -1,4 +1,16 @@
 services:
+  restaurant.security_button_type_extension:
+    class: RestaurantBundle\Form\Extension\SecurityButtonTypeExtention
+    arguments: [ "@security.authorization_checker" ]
+    tags:
+      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
+
+  restaurant.security_form_type_extension:
+    class: RestaurantBundle\Form\Extension\SecurityFormTypeExtention
+    arguments: [ "@security.authorization_checker" ]
+    tags:
+      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
 #    restaurant.example:
 #        class: RestaurantBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]

@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -55,14 +56,34 @@ class DishType extends AbstractType
                 'allow_delete'  => true,
                 'label' => false
             ))
-            ->add('status', ChoiceType::class, array(
-                'choices'  => array(
-                    'draft'         => 'draft',
-                    'in_validation' => 'in_validation',
-                    'refuse'        => 'refuse',
-                    'valid'         => 'valid',
+            ->add('draft', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-info float-left mr-1'
                 ),
-                'label' => 'status',
+                'label' => 'draft',
+                'translation_domain' => 'general',
+            ))
+            ->add('in_validation', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-primary float-left mr-1'
+                ),
+                'label' => 'in_validation',
+                'translation_domain' => 'general',
+            ))
+            ->add('refuse', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-danger float-left mr-1'
+                ),
+                'is_granted' => 'ROLE_REVIEWER',
+                'label' => 'refuse',
+                'translation_domain' => 'general',
+            ))
+            ->add('valid', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-success float-left mr-1'
+                ),
+                'is_granted' => 'ROLE_REVIEWER',
+                'label' => 'valid',
                 'translation_domain' => 'general',
             ))
         ;

@@ -7,9 +7,17 @@
 {% block body %}
     {{ form_start(form) }}
         {{ form_widget(form) }}
-
-        <input type="submit" class="btn btn-primary float-left mr-1" value="{{ 'new_button'|trans({}, 'general') }}" />
     {{ form_end(form) }}
 
     <a class="btn btn-default float-left mr-1" href="{{ path('menu_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="application/javascript">
+        $(".select2").select2({
+            placeholder: "{{ 'menu_dishes_placeholder'|trans({}, 'menu') }}"
+        });
+    </script>
 {% endblock %}

@@ -47,6 +47,18 @@ class DishController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('in_validation')->isClicked()) {
+                $status = 'in_validation';
+            } elseif ($form->get('refuse')->isClicked()) {
+                $status = 'refuse';
+            } elseif ($form->get('valid')->isClicked()) {
+                $status = 'valid';
+            } else {
+                $status = 'draft';
+            }
+
+            $dish->setStatus($status);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($dish);
             $em->flush($dish);
@@ -89,6 +101,18 @@ class DishController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            if ($editForm->get('in_validation')->isClicked()) {
+                $status = 'in_validation';
+            } elseif ($editForm->get('refuse')->isClicked()) {
+                $status = 'refuse';
+            } elseif ($editForm->get('valid')->isClicked()) {
+                $status = 'valid';
+            } else {
+                $status = 'draft';
+            }
+
+            $dish->setStatus($status);
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('dish_edit', array('id' => $dish->getId()));
@@ -99,6 +123,21 @@ class DishController extends Controller
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
+    }
+
+    /**
+     * Change the status of the entity.
+     *
+     * @Route("/{id}/validation/{status}", name="dish_validation")
+     * @Method("GET")
+     */
+    public function validationAction(Dish $dish, $status)
+    {
+        $dish->setStatus($status);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('menu_show', array('id' => $dish->getId()));
     }
 
     /**
