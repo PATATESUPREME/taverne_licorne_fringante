@@ -15,7 +15,6 @@
                 <th>{{ 'dish_status'|trans({}, 'dish') }}</th>
                 <th>{{ 'dish_home_made'|trans({}, 'dish') }}</th>
                 <th>{{ 'dish_author'|trans({}, 'dish') }}</th>
-                <th>{{ 'dish_image'|trans({}, 'dish') }}</th>
                 <th>{{ 'dish_category'|trans({}, 'dish') }}</th>
                 <th>{{ 'dish_allergens'|trans({}, 'dish') }}</th>
                 <th>{{ 'action_buttons'|trans({}, 'general') }}</th>
@@ -31,7 +30,6 @@
                 <td>{{ dish.status }}</td>
                 <td>{% if dish.homeMade %}Yes{% else %}No{% endif %}</td>
                 <td>{{ dish.author }}</td>
-                <td>{{ dish.image }}</td>
                 <td>{{ dish.category }}</td>
                 <td>{% if dish.allergens %}{{ dish.allergens|join(', ') }}{% endif %}</td>
                 <td>

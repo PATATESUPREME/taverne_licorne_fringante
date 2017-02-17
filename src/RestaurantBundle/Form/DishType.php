@@ -40,10 +40,13 @@ class DishType extends AbstractType
             ))
             ->add('image', FileType::class, array(
                 'attr' => array(
-                    'class' => 'custom-file-input'
+                    'class' => 'file',
+                    'data-show-upload' => false,
+                    'data-show-caption' => true
                 ),
                 'label' => 'dish_image',
                 'translation_domain' => 'dish',
+                'required' => false
             ))
             ->add('category', ChoiceType::class, array(
                 'choices'  => array(

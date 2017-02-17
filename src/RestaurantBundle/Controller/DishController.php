@@ -64,10 +64,12 @@ class DishController extends Controller
             } else {
                 $status = 'draft';
             }
-            $file = $dish->getImage();
-            $fileName = $this->get('restaurant.uploader')->upload($file);
+            if (!empty($dish->getImage())) {
+                $file = $dish->getImage();
+                $fileName = $this->get('restaurant.uploader')->upload($file);
 
-            $dish->setImage($fileName);
+                $dish->setImage($fileName);
+            }
             $dish->setStatus($status);
 
             $em->persist($dish);
@@ -106,9 +108,11 @@ class DishController extends Controller
      */
     public function editAction(Request $request, Dish $dish)
     {
-        $dish->setImage(
-            new File($this->getParameter('images_directory').'/'.$dish->getImage())
-        );
+        if (!empty($dish->getImage())) {
+            $dish->setImage(
+                new File($this->getParameter('images_directory').'/'.$dish->getImage())
+            );
+        }
         $deleteForm = $this->createDeleteForm($dish);
         $editForm = $this->createForm('RestaurantBundle\Form\DishType', $dish);
         $editForm->handleRequest($request);

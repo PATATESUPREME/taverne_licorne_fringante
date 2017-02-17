@@ -10,16 +10,7 @@
         {{ form_row(edit_form.description) }}
         {{ form_row(edit_form.price) }}
         {{ form_row(edit_form.homeMade) }}
-        <div class="form-group">
-            {{ form_label(edit_form.image) }}
-            {{ form_errors(edit_form.image) }}
-            <div>
-                <label class="custom-file">
-                    {{ form_widget(edit_form.image) }}
-                    <span class="custom-file-control"></span>
-                </label>
-            </div>
-        </div>
+        {{ form_row(edit_form.image) }}
         {{ form_row(edit_form.category) }}
         <div class="form-group">
             <label class="control-label" for="allergen-fields-list">{{ 'dish_allergens'|trans({}, 'dish') }}</label>
@@ -56,6 +47,28 @@
     {{ parent() }}
 
     <script>
+        $(".file").fileinput({
+            browseClass: "btn btn-success",
+            browseLabel: "{{ 'browse_button'|trans({}, 'general') }}",
+            browseIcon: "",
+            removeClass: "btn btn-danger",
+            removeLabel: "{{ 'delete_button'|trans({}, 'general') }}",
+            removeIcon: "",
+            allowedFileExtensions: ["gif", "jpg", "png"],
+            layoutTemplates: {
+                main1:
+                "<div class=\'input-group {class}\'>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+                "       {browse}\n" +
+                "   </div>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+                "       {remove}\n" +
+                "   </div>\n" +
+                "   {caption}\n" +
+                "</div>"
+            }
+        });
+
         // Add Allergen
         var $collectionHolder;
 
