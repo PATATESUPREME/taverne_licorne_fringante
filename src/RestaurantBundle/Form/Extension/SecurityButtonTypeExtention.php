@@ -5,8 +5,6 @@ namespace RestaurantBundle\Form\Extension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -53,13 +51,13 @@ class SecurityButtonTypeExtention extends AbstractTypeExtension
         }
 
         // Event listener not supported by button builder
-//        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-//            $form = $event->getForm();
-//            if ($form->isRoot()) {
-//                return;
-//            }
-//
-//            $form->getParent()->remove($form->getName());
-//        });
+        /*$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $form = $event->getForm();
+            if ($form->isRoot()) {
+                return;
+            }
+
+            $form->getParent()->remove($form->getName());
+        });*/
     }
 }

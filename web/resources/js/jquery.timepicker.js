@@ -164,7 +164,6 @@
             },
 
             /**
-             * TODO: Write me!
              *
              * @param i
              * @param direction
@@ -385,7 +384,6 @@
                 // if a date is already selected and options.dynamic is true,
                 // arrange the items in the list so the first item is
                 // cronologically right after the selected date.
-                // TODO: set selectedTime
                 if (i.rebuild || !i.items || arrange) {
                     i.items = widget._items(i, arrange ? selectedTime : null);
                 }
@@ -472,7 +470,6 @@
                 widget.viewport.css( { width: calculatedWidth } );
                 i.items.css( { width: calculatedWidth } );
 
-                // XXX: what's this line doing here?
                 widget.instance = i;
 
                 // try to match input field's current value with an item in the
@@ -574,14 +571,12 @@
                     i.selectedTime = time;
                     i.element.val(i.format(time, i.options.timeFormat));
 
-                    // TODO: add documentaion about setTime being chainable
                     if (silent) { return i; }
                 } else {
                     i.selectedTime = null;
                 }
 
                 // custom change event and change callback
-                // TODO: add documentation about this event
                 if (previous !== null || i.selectedTime !== null) {
                     i.element.trigger('time-change', [time]);
                     if ($.isFunction(i.options.change)) {
@@ -704,7 +699,6 @@
         };
 
         /**
-         * TODO: documentation
          */
         $.fn.timepicker.formatTime = function(format, time) {
             var hours = time.getHours(),
