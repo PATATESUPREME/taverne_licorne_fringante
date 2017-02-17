@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'menu_show_title'|trans({}, 'menu') }}</h1>
+{% endblock %}
 
+{% block body %}
     <table class="table">
         <tbody>
             <tr>
@@ -32,9 +34,17 @@
         </tbody>
     </table>
 
-    <a class="btn btn-default" href="{{ path('menu_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
-    <a class="btn btn-info" href="{{ path('menu_edit', { 'id': menu.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
-    {{ form_start(delete_form) }}
-        <input type="submit" class="btn btn-danger" value="{{ 'delete_button'|trans({}, 'general') }}">
-    {{ form_end(delete_form) }}
+    <a class="btn btn-default float-left mr-1" href="{{ path('menu_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+    {% if is_granted("ROLE_WRITER") %}
+        <a class="btn btn-info float-left mr-1" href="{{ path('menu_edit', { 'id': menu.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+    {% endif %}
+    {% if is_granted("ROLE_REVIEWER") %}
+        <a class="btn btn-success float-left mr-1" href="{{ path('menu_validation', { 'id': menu.id, 'status': 'valid' }) }}">{{ 'valid'|trans({}, 'general') }}</a>
+        <a class="btn btn-danger float-left mr-1" href="{{ path('menu_validation', { 'id': menu.id, 'status': 'refuse' }) }}">{{ 'refuse'|trans({}, 'general') }}</a>
+    {% endif %}
+    {% if is_granted("ROLE_CHIEF") %}
+        {{ form_start(delete_form) }}
+            <input type="submit" class="btn btn-danger float-left mr-1" value="{{ 'delete_button'|trans({}, 'general') }}">
+        {{ form_end(delete_form) }}
+    {% endif %}
 {% endblock %}

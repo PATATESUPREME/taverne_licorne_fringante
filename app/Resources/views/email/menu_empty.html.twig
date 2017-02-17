@@ -1,0 +1,34 @@
+<h3>{{ 'menu_empty_title'|trans({}, 'mail') }}</h3>
+
+{{ 'menu_empty_body'|trans({}, 'mail') }}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>{{ 'menu_id'|trans({}, 'menu') }}</th>
+        <th>{{ 'menu_title'|trans({}, 'menu') }}</th>
+        <th>{{ 'menu_price'|trans({}, 'menu') }}</th>
+        <th>{{ 'menu_display_order'|trans({}, 'menu') }}</th>
+        <th>{{ 'menu_status'|trans({}, 'menu') }}</th>
+        <th>{{ 'menu_author'|trans({}, 'menu') }}</th>
+        <th>{{ 'action_buttons'|trans({}, 'general') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for menu in menus %}
+        <tr>
+            <td><a href="http://restaurant.localhost/menu/{{ menu.id }}">{{ menu.id }}</a></td>
+            <td>{{ menu.title }}</td>
+            <td>{{ menu.price }}</td>
+            <td>{{ menu.displayOrder }}</td>
+            <td>{{ menu.status }}</td>
+            <td>{{ menu.author }}</td>
+            <td>
+                <a href="http://restaurant.localhost/menu/{{ menu.id }}">{{ 'show_button'|trans({}, 'general') }}</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{{ 'menu_empty_thanks'|trans({}, 'mail') }}

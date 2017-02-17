@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'menu_index_title'|trans({}, 'menu') }}</h1>
+{% endblock %}
 
+{% block body %}
     <table class="table">
         <thead>
             <tr>
@@ -26,12 +28,16 @@
                 <td>{{ menu.author }}</td>
                 <td>
                     <a class="btn btn-default" href="{{ path('menu_show', { 'id': menu.id }) }}">{{ 'show_button'|trans({}, 'general') }}</a>
-                    <a class="btn btn-info" href="{{ path('menu_edit', { 'id': menu.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+                    {% if is_granted("ROLE_WRITER") %}
+                        <a class="btn btn-info" href="{{ path('menu_edit', { 'id': menu.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-primary" href="{{ path('menu_new') }}">{{ 'menu_new_button'|trans({}, 'menu') }}</a>
+    {% if is_granted("ROLE_WRITER") %}
+        <a class="btn btn-primary" href="{{ path('menu_new') }}">{{ 'menu_new_button'|trans({}, 'menu') }}</a>
+    {% endif %}
 {% endblock %}

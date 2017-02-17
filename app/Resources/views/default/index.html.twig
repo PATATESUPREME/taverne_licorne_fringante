@@ -1,15 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'default_index_title'|trans({}, 'general') }}</h1>
+{% endblock %}
 
-    <div class="panel-primary">
-        <div class="col-lg-6 col-md-6">
-            <a class="btn btn-primary" href="{{ path('menu_front_index') }}">{{ 'menu_index_link'|trans({}, 'menu') }}</a>
-            <a class="btn btn-primary" href="{{ path('dish_front_index') }}">{{ 'dish_index_link'|trans({}, 'dish') }}</a>
+{% block body %}
+    <div class="row">
+        <div class="col-6">
+            <a class="btn btn-primary btn-lg btn-block" href="{{ path('menu_front_index') }}">
+                {{ 'menu_index_link'|trans({}, 'menu') }}
+            </a>
+            <a class="btn btn-primary btn-lg btn-block" href="{{ path('dish_front_index') }}">
+                {{ 'dish_index_link'|trans({}, 'dish') }}
+            </a>
         </div>
-        <div class="col-lg-6 col-md-6">
-            <a class="btn btn-primary" href="{{ path('booking_front_new') }}">{{ 'default_booking_new_link'|trans({}, 'general') }}</a>
+        <div class="col-6">
+            <a class="btn btn-primary btn-lg btn-block" href="{{ path('booking_front_new') }}">
+                {{ 'default_booking_new_link'|trans({}, 'general') }}
+            </a>
         </div>
     </div>
 {% endblock %}

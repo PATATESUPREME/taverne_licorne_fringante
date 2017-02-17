@@ -22,7 +22,7 @@ class Menu
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Dish", mappedBy="menus")
+     * @ORM\ManyToMany(targetEntity="Dish", inversedBy="menus")
      */
     private $dishes;
 

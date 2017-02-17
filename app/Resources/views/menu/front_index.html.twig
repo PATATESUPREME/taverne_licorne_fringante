@@ -1,24 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'menu_index_title'|trans({}, 'menu') }}</h1>
+{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>{{ 'menu_title'|trans({}, 'menu') }}</th>
-                <th>{{ 'menu_price'|trans({}, 'menu') }}</th>
-                <th>{{ 'menu_author'|trans({}, 'menu') }}</th>
-            </tr>
-        </thead>
-        <tbody>
+{% block body %}
+    <div class="col-lg-12 col-md-12">
         {% for menu in menus %}
-            <tr>
-                <td><a href="{{ path('menu_front_show', { 'id': menu.id }) }}">{{ menu.title }}</a></td>
-                <td>{{ menu.price }}</td>
-                <td>{{ menu.author }}</td>
-            </tr>
+            <div class="card px-2">
+                <div class="card-block">
+                    <h3 class="card-title">{{ menu.title }}</h3>
+                    <p class="card-text">
+                        {{ 'menu_card_text'|trans({'%price%': menu.price, '%author%': menu.author}, 'menu') }}
+                    </p>
+                    <a href="{{ path('menu_front_show', { 'id': menu.id }) }}" class="btn btn-primary">
+                        {{ 'detail_button'|trans({}, 'general') }}
+                    </a>
+                </div>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
+        <a class="btn btn-default" href="{{ path('default_index') }}">{{ 'home_button'|trans({}, 'general') }}</a>
+    </div>
 {% endblock %}

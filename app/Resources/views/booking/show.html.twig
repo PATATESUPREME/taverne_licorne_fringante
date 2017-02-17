@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'booking_show_title'|trans({}, 'booking') }}</h1>
+{% endblock %}
 
+{% block body %}
     <table class="table">
         <tbody>
             <tr>
@@ -11,11 +13,11 @@
             </tr>
             <tr>
                 <th>{{ 'booking_day'|trans({}, 'booking') }}</th>
-                <td>{% if booking.day %}{{ booking.day|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ booking.day }}</td>
             </tr>
             <tr>
                 <th>{{ 'booking_hour'|trans({}, 'booking') }}</th>
-                <td>{% if booking.hour %}{{ booking.hour|date('H:i:s') }}{% endif %}</td>
+                <td>{{  booking.hour }}</td>
             </tr>
             <tr>
                 <th>{{ 'booking_people'|trans({}, 'booking') }}</th>
@@ -36,9 +38,13 @@
         </tbody>
     </table>
 
-    <a class="btn btn-default" href="{{ path('booking_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
-    <a class="btn btn-info" href="{{ path('booking_edit', { 'id': booking.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
-    {{ form_start(delete_form) }}
-        <input type="submit" class="btn btn-danger" value="{{ 'delete_button'|trans({}, 'general') }}">
-    {{ form_end(delete_form) }}
+    <a class="btn btn-default float-left mr-1" href="{{ path('booking_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+    {% if is_granted("ROLE_WRITER") and dish.author == app.user.username %}
+    <a class="btn btn-info float-left mr-1" href="{{ path('booking_edit', { 'id': booking.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+    {% endif %}
+    {% if is_granted("ROLE_CHIEF") %}
+        {{ form_start(delete_form) }}
+            <input type="submit" class="btn btn-danger float-left mr-1" value="{{ 'delete_button'|trans({}, 'general') }}">
+        {{ form_end(delete_form) }}
+    {% endif %}
 {% endblock %}

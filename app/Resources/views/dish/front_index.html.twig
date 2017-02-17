@@ -1,35 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'dish_index_title'|trans({}, 'dish') }}</h1>
+{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>{{ 'dish_title'|trans({}, 'dish') }}</th>
-                <th>{{ 'dish_description'|trans({}, 'dish') }}</th>
-                <th>{{ 'dish_price'|trans({}, 'dish') }}</th>
-                <th>{{ 'dish_home_made'|trans({}, 'dish') }}</th>
-                <th>{{ 'dish_author'|trans({}, 'dish') }}</th>
-                <th>{{ 'dish_image'|trans({}, 'dish') }}</th>
-                <th>{{ 'dish_category'|trans({}, 'dish') }}</th>
-                <th>{{ 'dish_allergens'|trans({}, 'dish') }}</th>
-            </tr>
-        </thead>
-        <tbody>
+{% block body %}
+    <div class="col-lg-12 col-md-12">
         {% for dish in dishes %}
-            <tr>
-                <td><a href="{{ path('dish_front_show', { 'id': dish.id }) }}">{{ dish.title }}</a></td>
-                <td>{{ dish.description }}</td>
-                <td>{{ dish.price }}</td>
-                <td>{% if dish.homeMade %}Yes{% else %}No{% endif %}</td>
-                <td>{{ dish.author }}</td>
-                <td>{{ dish.image }}</td>
-                <td>{{ dish.category }}</td>
-                <td>{% if dish.allergens %}{{ dish.allergens|join(', ') }}{% endif %}</td>
-            </tr>
+            <div class="card px-2">
+                <div class="card-block">
+                    <h3 class="card-title">{{ dish.title }}</h3>
+                    <p class="card-text">
+                        {{ dish.description }}
+                    </p>
+                    <a href="{{ path('dish_front_show', { 'id': dish.id }) }}" class="btn btn-primary">
+                        {{ 'detail_button'|trans({}, 'general') }}
+                    </a>
+                </div>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
-
+        <a class="btn btn-default" href="{{ path('default_index') }}">{{ 'home_button'|trans({}, 'general') }}</a>
+    </div>
 {% endblock %}

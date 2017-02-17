@@ -6,6 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,7 +25,7 @@ class DishType extends AbstractType
                 'label' => 'dish_title',
                 'translation_domain' => 'dish',
             ))
-            ->add('description', TextType::class, array(
+            ->add('description', TextareaType::class, array(
                 'label' => 'dish_description',
                 'translation_domain' => 'dish',
             ))
@@ -35,9 +38,15 @@ class DishType extends AbstractType
                 'label' => 'dish_home_made',
                 'translation_domain' => 'dish',
             ))
-            ->add('image', TextType::class, array(
+            ->add('image', FileType::class, array(
+                'attr' => array(
+                    'class' => 'file',
+                    'data-show-upload' => false,
+                    'data-show-caption' => true
+                ),
                 'label' => 'dish_image',
                 'translation_domain' => 'dish',
+                'required' => false
             ))
             ->add('category', ChoiceType::class, array(
                 'choices'  => array(
@@ -52,23 +61,36 @@ class DishType extends AbstractType
                 'entry_type' => TextType::class,
                 'allow_add'  => true,
                 'allow_delete'  => true,
-                'label' => false,
-                'prototype' => true,
-                'prototype_data' =>
-                    '<input type="text"
-                        id="form_allergens___name__"
-                        name="form[allergens][__name__]"
-                        value=""
-                    />',
+                'label' => false
             ))
-            ->add('status', ChoiceType::class, array(
-                'choices'  => array(
-                    'draft'         => 'draft',
-                    'in_validation' => 'in_validation',
-                    'refuse'        => 'refuse',
-                    'valid'         => 'valid',
+            ->add('draft', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-info float-left mr-1'
                 ),
-                'label' => 'status',
+                'label' => 'draft',
+                'translation_domain' => 'general',
+            ))
+            ->add('in_validation', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-primary float-left mr-1'
+                ),
+                'label' => 'in_validation',
+                'translation_domain' => 'general',
+            ))
+            ->add('refuse', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-danger float-left mr-1'
+                ),
+                'is_granted' => 'ROLE_REVIEWER',
+                'label' => 'refuse',
+                'translation_domain' => 'general',
+            ))
+            ->add('valid', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-success float-left mr-1'
+                ),
+                'is_granted' => 'ROLE_REVIEWER',
+                'label' => 'valid',
                 'translation_domain' => 'general',
             ))
         ;

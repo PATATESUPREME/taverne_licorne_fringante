@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'booking_index_title'|trans({}, 'booking') }}</h1>
+{% endblock %}
 
+{% block body %}
     <table class="table">
         <thead>
             <tr>
@@ -20,20 +22,24 @@
         {% for booking in bookings %}
             <tr>
                 <td><a href="{{ path('booking_show', { 'id': booking.id }) }}">{{ booking.id }}</a></td>
-                <td>{% if booking.day %}{{ booking.day|date('Y-m-d') }}{% endif %}</td>
-                <td>{% if booking.hour %}{{ booking.hour|date('H:i:s') }}{% endif %}</td>
+                <td>{{ booking.day }}</td>
+                <td>{{ booking.hour }}</td>
                 <td>{{ booking.peopleBooked }}</td>
                 <td>{{ booking.email }}</td>
                 <td>{{ booking.name }}</td>
                 <td>{{ booking.phone }}</td>
                 <td>
                     <a class="btn btn-default" href="{{ path('booking_show', { 'id': booking.id }) }}" >{{ 'show_button'|trans({}, 'general') }}</a>
+                    {% if is_granted("ROLE_WRITER") and dish.author == app.user.username %}
                     <a class="btn btn-info" href="{{ path('booking_edit', { 'id': booking.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-primary" href="{{ path('booking_new') }}">{{ 'booking_new_button'|trans({}, 'booking') }}</a>
+    {% if is_granted("ROLE_WRITER") %}
+        <a class="btn btn-primary" href="{{ path('booking_new') }}">{{ 'booking_new_button'|trans({}, 'booking') }}</a>
+    {% endif %}
 {% endblock %}

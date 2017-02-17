@@ -1,0 +1,34 @@
+booking_confirmation_subject: Confirmation de réservation
+booking_confirmation_title: Information sur votre réservation
+booking_confirmation_body: %name%, vous venez de réserver dans notre restaurant pour %peopleBooked% personne(s) le %day% à %hour%.
+booking_confirmation_thanks: Merci d'avoir réservé dans notre restaurant, l'équipe de la taverne de la licorne fringante.
+
+dish_confirmation_subject: Valition de plat
+dish_confirmation_title: Demande de validation de plat
+dish_confirmation_body: L'utilisateur %author% voudrait faire valider le plat %title%.
+dish_confirmation_link: Voir le plat
+dish_confirmation_thanks: Cordialement, System.
+
+menu_confirmation_subject: Valition de menu
+menu_confirmation_title: Demande de validation de menu
+menu_confirmation_body: L'utilisateur %author% voudrait faire valider le menu %title%.
+menu_confirmation_link: Voir le menu
+menu_confirmation_thanks: Cordialement, System.
+
+dish_confirmed_subject: Plat validé
+dish_confirmed_title: Un plat a été validé
+dish_confirmed_body: Le plat %title% de %author% viens d'être validé.
+dish_confirmed_link: Voir le plat
+dish_confirmed_thanks: Cordialement, System.
+
+menu_confirmed_subject: Menu validé
+menu_confirmed_title: Un menu a été validé
+menu_confirmed_body: Le menu %title% de %author% viens d'être validé.
+menu_confirmed_link: Voir le menu
+menu_confirmed_thanks: Cordialement, System.
+
+menu_empty_subject: Menus sans plats
+menu_empty_title: Des menus sont dépourvus de plats
+menu_empty_body: Les menus suivant n'ont aucun plats :
+menu_empty_link: Voir le menu
+menu_empty_thanks: Cordialement, System.

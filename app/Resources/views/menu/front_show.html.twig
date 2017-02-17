@@ -1,22 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>{{ 'menu_show_title'|trans({}, 'menu') }}</h1>
+{% block header %}
+    <h1>{{ menu.title }}</h1>
+{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>{{ 'menu_title'|trans({}, 'menu') }}</th>
-                <td>{{ menu.title }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'menu_price'|trans({}, 'menu') }}</th>
-                <td>{{ menu.price }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'menu_author'|trans({}, 'menu') }}</th>
-                <td>{{ menu.author }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block body %}
+    <div class="row">
+        <div class="col-9">
+            <p>{{ 'menu_author_front'|trans({'%author%': menu.author}, 'menu') }}</p>
+        </div>
+        <div class="col-3">
+            <p class="lead"><label>{{ 'menu_price'|trans({}, 'menu') }}</label> {{ menu.price }} {{ 'money_symbol'|trans({}, 'general') }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label>{{ 'menu_dishes'|trans({}, 'menu') }}</label>
+            <div class="row">
+                {% for dish in menu.dishes %}
+                    <div class="col-3">
+                        <div class="card px-2">
+                            <img class="card-img-top" src="{{ asset('resources/uploads/images/' ~ dish.image) }}" alt="Image of {{ dish.title }}">
+                            <div class="card-block">
+                                <h3 class="card-title">{{ dish.title }}</h3>
+                                <p class="card-text">
+                                    {{ dish.description }}
+                                </p>
+                                <a href="{{ path('dish_front_show', { 'id': dish.id }) }}" class="btn btn-primary">
+                                    {{ 'detail_button'|trans({}, 'general') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <a class="btn btn-default" href="{{ path('menu_front_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
 {% endblock %}

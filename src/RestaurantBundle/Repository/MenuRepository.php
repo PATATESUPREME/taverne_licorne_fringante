@@ -25,4 +25,19 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getResult();
     }
+
+    /**
+     * @return array
+     */
+    public function findEmptyDishesMenuList()
+    {
+        $qb = $this
+            ->createQueryBuilder('m')
+            ->leftJoin('m.dishes', 'd')
+            ->where('d.id IS NULL')
+            ->getQuery()
+        ;
+
+        return $qb->getResult();
+    }
 }

@@ -5,7 +5,9 @@ namespace RestaurantBundle\Controller;
 use RestaurantBundle\Entity\Dish;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Dish controller.
@@ -48,8 +50,30 @@ class DishController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            if ($form->get('in_validation')->isClicked()) {
+                $status = 'in_validation';
+
+                $this->get('restaurant.mailer')->dishMailToReviewers($dish);
+            } elseif ($form->get('refuse')->isClicked()) {
+                $status = 'refuse';
+            } elseif ($form->get('valid')->isClicked()) {
+                $status = 'valid';
+
+                $this->get('restaurant.mailer')->dishMailToWaiters($dish);
+            } else {
+                $status = 'draft';
+            }
+            if (!empty($dish->getImage())) {
+                $file = $dish->getImage();
+                $fileName = $this->get('restaurant.uploader')->upload($file);
+
+                $dish->setImage($fileName);
+            }
+            $dish->setStatus($status);
+
             $em->persist($dish);
-            $em->flush($dish);
+            $em->flush();
 
             return $this->redirectToRoute('dish_show', array('id' => $dish->getId()));
         }
@@ -84,12 +108,34 @@ class DishController extends Controller
      */
     public function editAction(Request $request, Dish $dish)
     {
+        if (!empty($dish->getImage())) {
+            $dish->setImage(
+                new File($this->getParameter('images_directory').'/'.$dish->getImage())
+            );
+        }
         $deleteForm = $this->createDeleteForm($dish);
         $editForm = $this->createForm('RestaurantBundle\Form\DishType', $dish);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+            if ($editForm->get('in_validation')->isClicked()) {
+                $status = 'in_validation';
+
+                $this->get('restaurant.mailer')->dishMailToReviewers($dish);
+            } elseif ($editForm->get('refuse')->isClicked()) {
+                $status = 'refuse';
+            } elseif ($editForm->get('valid')->isClicked()) {
+                $status = 'valid';
+
+                $this->get('restaurant.mailer')->dishMailToWaiters($dish);
+            } else {
+                $status = 'draft';
+            }
+
+            $dish->setStatus($status);
+
+            $em->flush();
 
             return $this->redirectToRoute('dish_edit', array('id' => $dish->getId()));
         }
@@ -99,6 +145,25 @@ class DishController extends Controller
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
+    }
+
+    /**
+     * Change the status of the entity.
+     *
+     * @Route("/{id}/validation/{status}", name="dish_validation")
+     * @Method("GET")
+     */
+    public function validationAction(Dish $dish, $status)
+    {
+        $dish->setStatus($status);
+
+        if ('valid' === $status) {
+            $this->get('restaurant.mailer')->dishMailToWaiters($dish);
+        }
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('dish_show', array('id' => $dish->getId()));
     }
 
     /**
@@ -115,7 +180,7 @@ class DishController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($dish);
-            $em->flush($dish);
+            $em->flush();
         }
 
         return $this->redirectToRoute('dish_index');

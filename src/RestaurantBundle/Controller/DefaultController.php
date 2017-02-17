@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
@@ -82,9 +83,27 @@ class DefaultController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($booking);
-            $em->flush($booking);
+            $em->flush();
 
-            return $this->redirectToRoute('booking_show', array('id' => $booking->getId()));
+            $subject =
+                '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
+                $this->get('translator')->trans('booking_confirmation_subject', array(), 'mail');
+            $mail = \Swift_Message::newInstance()
+                ->setSubject($subject)
+                ->setFrom('taverne.licorne.fringante@gmail.com')
+                ->setTo($booking->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'email/booking_confirmation.html.twig',
+                        array(
+                            'booking' => $booking)
+                    ),
+                    'text/html'
+                )
+            ;
+            $this->get('mailer')->send($mail);
+
+            return $this->redirectToRoute('default_index');
         }
 
         return $this->render('booking/front_new.html.twig', array(

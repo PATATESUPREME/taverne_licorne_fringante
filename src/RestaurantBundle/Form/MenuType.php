@@ -2,11 +2,12 @@
 
 namespace RestaurantBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,21 +32,46 @@ class MenuType extends AbstractType
                 'label' => 'menu_display_order',
                 'translation_domain' => 'menu',
             ))
-            ->add('dishes', CollectionType::class, array(
-                'entry_type' => DishType::class,
-                'allow_add'  => true,
-                'allow_delete'  => true,
-                'label' => false,
+            ->add('dishes', EntityType::class, array(
+                'class' => 'RestaurantBundle:Dish',
+                'choice_label' => 'title',
+                'multiple' => true,
+                'expanded' => false,
+                'required' => false,
+                'attr' => array(
+                    'class' => 'select2'
+                ),
+                'label' => 'menu_dishes',
                 'translation_domain' => 'menu',
             ))
-            ->add('status', ChoiceType::class, array(
-                'choices'  => array(
-                    'draft'         => 'draft',
-                    'in_validation' => 'in_validation',
-                    'refuse'        => 'refuse',
-                    'valid'         => 'valid',
+            ->add('draft', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-info float-left mr-1'
                 ),
-                'label' => 'status',
+                'label' => 'draft',
+                'translation_domain' => 'general',
+            ))
+            ->add('in_validation', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-primary float-left mr-1'
+                ),
+                'label' => 'in_validation',
+                'translation_domain' => 'general',
+            ))
+            ->add('refuse', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-danger float-left mr-1'
+                ),
+                'is_granted' => 'ROLE_REVIEWER',
+                'label' => 'refuse',
+                'translation_domain' => 'general',
+            ))
+            ->add('valid', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-success float-left mr-1'
+                ),
+                'is_granted' => 'ROLE_REVIEWER',
+                'label' => 'valid',
                 'translation_domain' => 'general',
             ))
         ;

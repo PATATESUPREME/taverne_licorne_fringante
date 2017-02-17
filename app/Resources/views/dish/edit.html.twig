@@ -1,28 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block header %}
     <h1>{{ 'dish_edit_title'|trans({}, 'dish') }}</h1>
+{% endblock %}
 
+{% block body %}
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-
-        <label class="control-label" for="allergen-fields-list">{{ 'dish_allergens'|trans({}, 'dish') }}</label>
-        <ul class="allergens" data-prototype="{{ form_widget(edit_form.allergens.vars.prototype)|e }}">
-            {% for allergen in edit_form.allergens %}
-                <li>
-                    {{ form_errors(allergen) }}
-                    {{ form_widget(allergen) }}
-                </li>
-            {% endfor %}
-        </ul>
-
-        <input type="submit" class="btn btn-info" value="{{ 'edit_button'|trans({}, 'general') }}" />
+        {{ form_row(edit_form.title) }}
+        {{ form_row(edit_form.description) }}
+        {{ form_row(edit_form.price) }}
+        {{ form_row(edit_form.homeMade) }}
+        {{ form_row(edit_form.image) }}
+        {{ form_row(edit_form.category) }}
+        <div class="form-group">
+            <label class="control-label" for="allergen-fields-list">{{ 'dish_allergens'|trans({}, 'dish') }}</label>
+            <ul class="allergens list-group" data-prototype="{{ form_widget(edit_form.allergens.vars.prototype)|e }}">
+                {% for allergen in edit_form.allergens %}
+                    <li class="list-group-item">
+                        {{ form_errors(allergen) }}
+                        {{ form_widget(allergen) }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {{ form_row(edit_form.draft) }}
+        {{ form_row(edit_form.in_validation) }}
+        {% if is_granted("ROLE_REVIEWER") %}
+            {{ form_row(edit_form.refuse) }}
+            {{ form_row(edit_form.valid) }}
+        {% else %}
+            {{ form_row(edit_form.refuse, { 'attr': {'class': 'hidden-xs-up'}}) }}
+            {{ form_row(edit_form.valid, { 'attr': {'class': 'hidden-xs-up'}}) }}
+        {% endif %}
     {{ form_end(edit_form) }}
 
+    {% if is_granted("ROLE_CHIEF") %}
+        {{ form_start(delete_form) }}
+        <input type="submit" class="btn btn-danger float-left mr-1" value="{{ 'delete_button'|trans({}, 'general') }}">
+        {{ form_end(delete_form) }}
+    {% endif %}
     <a class="btn btn-default" href="{{ path('dish_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
-    {{ form_start(delete_form) }}
-        <input type="submit" class="btn btn-danger" value="{{ 'delete_button'|trans({}, 'general') }}">
-    {{ form_end(delete_form) }}
 {% endblock %}
 
 {% block javascripts %}
@@ -30,11 +47,33 @@
     {{ parent() }}
 
     <script>
+        $(".file").fileinput({
+            browseClass: "btn btn-success",
+            browseLabel: "{{ 'browse_button'|trans({}, 'general') }}",
+            browseIcon: "",
+            removeClass: "btn btn-danger",
+            removeLabel: "{{ 'delete_button'|trans({}, 'general') }}",
+            removeIcon: "",
+            allowedFileExtensions: ["gif", "jpg", "png"],
+            layoutTemplates: {
+                main1:
+                "<div class=\'input-group {class}\'>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+                "       {browse}\n" +
+                "   </div>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+                "       {remove}\n" +
+                "   </div>\n" +
+                "   {caption}\n" +
+                "</div>"
+            }
+        });
+
         // Add Allergen
         var $collectionHolder;
 
-        var $addAllergenLink = $('<a href="#" class="add_allergen_link">{{ 'dish_add_allergen'|trans({}, 'dish') }}</a>');
-        var $newLinkLi = $('<li></li>').append($addAllergenLink);
+        var $addAllergenLink = $('<a href="#" class="btn btn-warning add_allergen_link">{{ 'dish_add_allergen'|trans({}, 'dish') }}</a>');
+        var $newLinkLi = $('<li class="list-group-item"></li>').append($addAllergenLink);
 
         jQuery(document).ready(function() {
             $collectionHolder = $('ul.allergens');
@@ -58,7 +97,7 @@
 
             $collectionHolder.data('index', index + 1);
 
-            var $newFormLi = $('<li></li>').append(newForm);
+            var $newFormLi = $('<li class="list-group-item"></li>').append(newForm);
             $newLinkLi.before($newFormLi);
         }
     </script>
