@@ -1,0 +1,4 @@
+booking_confirmation_subject: Confirmation de réservation
+booking_confirmation_title: Information sur votre réservation
+booking_confirmation_body: %name%, vous venez de réserver dans notre restaurant pour %peopleBooked% personne(s) le %day% à %hour%.
+booking_confirmation_thanks: Merci d'avoir réservé dans notre restaurant, l'équipe de la taverne de la licorne fringante.

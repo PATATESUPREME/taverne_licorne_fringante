@@ -82,7 +82,25 @@ class DefaultController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($booking);
-            $em->flush($booking);
+            $em->flush();
+
+            $subject =
+                '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
+                $this->get('translator')->trans('booking_confirmation_subject', array(), 'mail');
+            $message = \Swift_Message::newInstance()
+                ->setSubject($subject)
+                ->setFrom('taverne.licorne.fringante@gmail.com')
+                ->setTo($booking->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'email/booking_confirmation.html.twig',
+                        array(
+                            'booking' => $booking)
+                    ),
+                    'text/html'
+                )
+            ;
+            $this->get('mailer')->send($message);
 
             return $this->redirectToRoute('default_index');
         }

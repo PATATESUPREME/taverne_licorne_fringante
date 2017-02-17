@@ -1,0 +1,12 @@
+<h3>{{ 'booking_confirmation_title'|trans({}, 'mail') }}</h3>
+
+{{ 'booking_confirmation_body'|trans({
+    '%name%': booking.name,
+    '%day%': booking.day,
+    '%hour%': booking.hour,
+    '%peopleBooked%': booking.peopleBooked,
+}, 'mail') }}
+
+{{ 'booking_confirmation_thanks'|trans({}, 'mail') }}
+
+
