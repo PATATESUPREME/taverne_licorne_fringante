@@ -51,13 +51,13 @@ class DishController extends Controller
             if ($form->get('in_validation')->isClicked()) {
                 $status = 'in_validation';
 
-                $this->mailToReviewers($dish);
+                $this->get('restaurant.mailer')->dishMailToReviewers($dish);
             } elseif ($form->get('refuse')->isClicked()) {
                 $status = 'refuse';
             } elseif ($form->get('valid')->isClicked()) {
                 $status = 'valid';
 
-                $this->mailToWaiters($dish);
+                $this->get('restaurant.mailer')->dishMailToWaiters($dish);
             } else {
                 $status = 'draft';
             }
@@ -109,13 +109,13 @@ class DishController extends Controller
             if ($editForm->get('in_validation')->isClicked()) {
                 $status = 'in_validation';
 
-                $this->mailToReviewers($dish);
+                $this->get('restaurant.mailer')->dishMailToReviewers($dish);
             } elseif ($editForm->get('refuse')->isClicked()) {
                 $status = 'refuse';
             } elseif ($editForm->get('valid')->isClicked()) {
                 $status = 'valid';
 
-                $this->mailToWaiters($dish);
+                $this->get('restaurant.mailer')->dishMailToWaiters($dish);
             } else {
                 $status = 'draft';
             }
@@ -145,7 +145,7 @@ class DishController extends Controller
         $dish->setStatus($status);
 
         if ('valid' === $status) {
-            $this->mailToWaiters($dish);
+            $this->get('restaurant.mailer')->dishMailToWaiters($dish);
         }
 
         $this->getDoctrine()->getManager()->flush();
@@ -187,75 +187,5 @@ class DishController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
-    }
-
-    /**
-     * @param Dish $dish
-     */
-    private function mailToWaiters(Dish $dish)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $possibleReviewer = $em
-            ->getRepository('RestaurantBundle:User')
-            ->getPossibleReviewerList();
-
-        $from = method_exists ( $this->get('security.token_storage')->getToken()->getUser() , 'getEmail' ) ?
-            $this->get('security.token_storage')->getToken()->getUser()->getEmail() :
-            'super.admin.taverne.licorne.fringante@gmail.com'
-        ;
-
-        $subject =
-            '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
-            $this->get('translator')->trans('dish_confirmed_subject', array(), 'mail');
-        $mail = \Swift_Message::newInstance()
-            ->setSubject($subject)
-            ->setFrom($from)
-            ->setTo($possibleReviewer)
-            ->setBody(
-                $this->renderView(
-                    'email/dish_confirmed.html.twig',
-                    array(
-                        'dish' => $dish)
-                ),
-                'text/html'
-            )
-        ;
-        $this->get('mailer')->send($mail);
-    }
-
-    /**
-     * @param Dish $dish
-     */
-    private function mailToReviewers(Dish $dish)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $possibleReviewer = $em
-            ->getRepository('RestaurantBundle:User')
-            ->getPossibleReviewerList();
-
-        $from = method_exists ( $this->get('security.token_storage')->getToken()->getUser() , 'getEmail' ) ?
-            $this->get('security.token_storage')->getToken()->getUser()->getEmail() :
-            'super.admin.taverne.licorne.fringante@gmail.com'
-        ;
-
-        $subject =
-            '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
-            $this->get('translator')->trans('dish_confirmation_subject', array(), 'mail');
-        $mail = \Swift_Message::newInstance()
-            ->setSubject($subject)
-            ->setFrom($from)
-            ->setTo($possibleReviewer)
-            ->setBody(
-                $this->renderView(
-                    'email/dish_confirmation.html.twig',
-                    array(
-                        'dish' => $dish)
-                ),
-                'text/html'
-            )
-        ;
-        $this->get('mailer')->send($mail);
     }
 }

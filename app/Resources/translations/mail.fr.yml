@@ -26,3 +26,9 @@ menu_confirmed_title: Un menu a été validé
 menu_confirmed_body: Le menu %title% de %author% viens d'être validé.
 menu_confirmed_link: Voir le menu
 menu_confirmed_thanks: Cordialement, System.
+
+menu_empty_subject: Menus sans plats
+menu_empty_title: Des menus sont dépourvus de plats
+menu_empty_body: Les menus suivant n'ont aucun plats :
+menu_empty_link: Voir le menu
+menu_empty_thanks: Cordialement, System.

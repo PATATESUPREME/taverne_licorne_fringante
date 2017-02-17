@@ -5,6 +5,6 @@
     '%title%': dish.title
 }, 'mail') }}
 
-<a href="http://restaurant.localhost/dish/{{ dish.id }}">{{ 'dish_confirmation_link'|trans({}, 'mail') }}</a>
+<a href="http://restaurant.localhost/dish/{{ dish.id }}">{{ 'dish_confirmed_link'|trans({}, 'mail') }}</a>
 
 {{ 'dish_confirmed_thanks'|trans({}, 'mail') }}

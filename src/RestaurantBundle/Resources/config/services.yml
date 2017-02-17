@@ -11,6 +11,9 @@ services:
     tags:
       - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
+  restaurant.mailer:
+    class: RestaurantBundle\Services\MailerService
+    arguments: [ "@service_container" ]
 #    restaurant.example:
 #        class: RestaurantBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]

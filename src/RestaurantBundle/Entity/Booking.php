@@ -218,4 +218,3 @@ class Booking
         return $this->phone;
     }
 }
-

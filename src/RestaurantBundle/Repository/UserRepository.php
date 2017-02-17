@@ -10,7 +10,7 @@ namespace RestaurantBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getPossibleReviewerList()
+    public function findPossibleReviewerList()
     {
         $qb = $this
             ->createQueryBuilder('u')
@@ -35,7 +35,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return 'taverne.licorne.fringante@gmail.com';
     }
 
-    public function getPossibleWaiterList()
+    public function findPossibleWaiterList()
     {
         $qb = $this
             ->createQueryBuilder('u')
