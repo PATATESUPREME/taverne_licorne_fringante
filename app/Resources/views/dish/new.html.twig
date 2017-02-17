@@ -8,7 +8,16 @@
         {{ form_row(form.description) }}
         {{ form_row(form.price) }}
         {{ form_row(form.homeMade) }}
-        {{ form_row(form.image) }}
+        <div class="form-group">
+            {{ form_label(edit_form.image) }}
+            {{ form_errors(edit_form.image) }}
+            <div>
+                <label class="custom-file">
+                    {{ form_widget(edit_form.image) }}
+                    <span class="custom-file-control"></span>
+                </label>
+            </div>
+        </div>
         {{ form_row(form.category) }}
         <label class="control-label" for="allergen-fields-list">{{ 'dish_allergens'|trans({}, 'dish') }}</label>
         <ul class="allergens" data-prototype="{{ form_widget(form.allergens.vars.prototype)|e }}">

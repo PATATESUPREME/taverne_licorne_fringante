@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,7 +38,10 @@ class DishType extends AbstractType
                 'label' => 'dish_home_made',
                 'translation_domain' => 'dish',
             ))
-            ->add('image', TextType::class, array(
+            ->add('image', FileType::class, array(
+                'attr' => array(
+                    'class' => 'custom-file-input'
+                ),
                 'label' => 'dish_image',
                 'translation_domain' => 'dish',
             ))

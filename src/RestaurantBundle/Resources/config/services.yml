@@ -14,6 +14,17 @@ services:
   restaurant.mailer:
     class: RestaurantBundle\Services\MailerService
     arguments: [ "@service_container" ]
+
+  restaurant.uploader:
+          class: RestaurantBundle\Services\FileUploaderService
+          arguments: ['%images_directory%']
+
+  restaurant.doctrine_dish_listener:
+          class: RestaurantBundle\EventListener\ImageUploadListener
+          arguments: ['@restaurant.uploader']
+          tags:
+              - { name: doctrine.event_listener, event: prePersist }
+              - { name: doctrine.event_listener, event: preUpdate }
 #    restaurant.example:
 #        class: RestaurantBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]

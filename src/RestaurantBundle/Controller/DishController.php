@@ -5,7 +5,9 @@ namespace RestaurantBundle\Controller;
 use RestaurantBundle\Entity\Dish;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Dish controller.
@@ -48,6 +50,7 @@ class DishController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             if ($form->get('in_validation')->isClicked()) {
                 $status = 'in_validation';
 
@@ -61,7 +64,10 @@ class DishController extends Controller
             } else {
                 $status = 'draft';
             }
+            $file = $dish->getImage();
+            $fileName = $this->get('restaurant.uploader')->upload($file);
 
+            $dish->setImage($fileName);
             $dish->setStatus($status);
 
             $em->persist($dish);
@@ -100,6 +106,9 @@ class DishController extends Controller
      */
     public function editAction(Request $request, Dish $dish)
     {
+        $dish->setImage(
+            new File($this->getParameter('images_directory').'/'.$dish->getImage())
+        );
         $deleteForm = $this->createDeleteForm($dish);
         $editForm = $this->createForm('RestaurantBundle\Form\DishType', $dish);
         $editForm->handleRequest($request);
@@ -150,7 +159,7 @@ class DishController extends Controller
 
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('menu_show', array('id' => $dish->getId()));
+        return $this->redirectToRoute('dish_show', array('id' => $dish->getId()));
     }
 
     /**

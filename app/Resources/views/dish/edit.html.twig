@@ -10,7 +10,16 @@
         {{ form_row(edit_form.description) }}
         {{ form_row(edit_form.price) }}
         {{ form_row(edit_form.homeMade) }}
-        {{ form_row(edit_form.image) }}
+        <div class="form-group">
+            {{ form_label(edit_form.image) }}
+            {{ form_errors(edit_form.image) }}
+            <div>
+                <label class="custom-file">
+                    {{ form_widget(edit_form.image) }}
+                    <span class="custom-file-control"></span>
+                </label>
+            </div>
+        </div>
         {{ form_row(edit_form.category) }}
         <div class="form-group">
             <label class="control-label" for="allergen-fields-list">{{ 'dish_allergens'|trans({}, 'dish') }}</label>

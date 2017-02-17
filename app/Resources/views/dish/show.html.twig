@@ -37,7 +37,7 @@
             </tr>
             <tr>
                 <th>{{ 'dish_image'|trans({}, 'dish') }}</th>
-                <td>{{ dish.image }}</td>
+                <td><img src="{{ asset('resources/uploads/images/' ~ dish.image) }}" alt="Image of {{ dish.title }}"></td>
             </tr>
             <tr>
                 <th>{{ 'dish_category'|trans({}, 'dish') }}</th>

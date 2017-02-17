@@ -7,7 +7,7 @@
 {% block body %}
     <div class="row">
         <div class="col-4">
-            <img src="" alt="{{ dish.image }}">
+            <img src="{{ asset('resources/uploads/images/' ~ dish.image) }}" alt="Image of {{ dish.title }}">
         </div>
         <div class="col-6">
             <p><label>{{ 'dish_author'|trans({}, 'dish') }}</label> {{ dish.author }}</p>
