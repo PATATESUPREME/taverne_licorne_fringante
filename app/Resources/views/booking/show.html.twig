@@ -39,7 +39,7 @@
     </table>
 
     <a class="btn btn-default float-left mr-1" href="{{ path('booking_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
-    {% if is_granted("ROLE_WRITER") and dish.author == app.user.username %}
+    {% if is_granted("ROLE_WRITER") %}
     <a class="btn btn-info float-left mr-1" href="{{ path('booking_edit', { 'id': booking.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
     {% endif %}
     {% if is_granted("ROLE_CHIEF") %}

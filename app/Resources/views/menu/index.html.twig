@@ -28,7 +28,7 @@
                 <td>{{ menu.author }}</td>
                 <td>
                     <a class="btn btn-default" href="{{ path('menu_show', { 'id': menu.id }) }}">{{ 'show_button'|trans({}, 'general') }}</a>
-                    {% if is_granted("ROLE_WRITER") %}
+                    {% if is_granted("ROLE_WRITER") and menu.author == app.user.username %}
                         <a class="btn btn-info" href="{{ path('menu_edit', { 'id': menu.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
                     {% endif %}
                 </td>

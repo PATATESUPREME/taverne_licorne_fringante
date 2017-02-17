@@ -10,15 +10,17 @@
         {{ form_row(form.homeMade) }}
         {{ form_row(form.image) }}
         {{ form_row(form.category) }}
-        <label class="control-label" for="allergen-fields-list">{{ 'dish_allergens'|trans({}, 'dish') }}</label>
-        <ul class="allergens list-group" data-prototype="{{ form_widget(form.allergens.vars.prototype)|e }}">
-            {% for allergen in form.allergens %}
-                <li class="list-group-item">
-                    {{ form_errors(allergen) }}
-                    {{ form_widget(allergen) }}
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="form-group">
+            <label class="control-label" for="allergen-fields-list">{{ 'dish_allergens'|trans({}, 'dish') }}</label>
+            <ul class="allergens list-group" data-prototype="{{ form_widget(form.allergens.vars.prototype)|e }}">
+                {% for allergen in form.allergens %}
+                    <li class="list-group-item">
+                        {{ form_errors(allergen) }}
+                        {{ form_widget(allergen) }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
         {{ form_row(form.draft) }}
         {{ form_row(form.in_validation) }}
         {% if is_granted("ROLE_REVIEWER") %}
