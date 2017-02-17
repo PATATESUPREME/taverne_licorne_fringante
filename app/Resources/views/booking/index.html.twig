@@ -30,7 +30,7 @@
                 <td>{{ booking.phone }}</td>
                 <td>
                     <a class="btn btn-default" href="{{ path('booking_show', { 'id': booking.id }) }}" >{{ 'show_button'|trans({}, 'general') }}</a>
-                    {% if is_granted("ROLE_WRITER") %}
+                    {% if is_granted("ROLE_WRITER") and dish.author == app.user.username %}
                     <a class="btn btn-info" href="{{ path('booking_edit', { 'id': booking.id }) }}">{{ 'edit_button'|trans({}, 'general') }}</a>
                     {% endif %}
                 </td>

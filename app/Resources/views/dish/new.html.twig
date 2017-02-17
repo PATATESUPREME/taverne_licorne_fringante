@@ -9,11 +9,11 @@
         {{ form_row(form.price) }}
         {{ form_row(form.homeMade) }}
         <div class="form-group">
-            {{ form_label(edit_form.image) }}
-            {{ form_errors(edit_form.image) }}
+            {{ form_label(form.image) }}
+            {{ form_errors(form.image) }}
             <div>
                 <label class="custom-file">
-                    {{ form_widget(edit_form.image) }}
+                    {{ form_widget(form.image) }}
                     <span class="custom-file-control"></span>
                 </label>
             </div>
@@ -67,13 +67,7 @@
         });
 
         function addAllergenForm($collectionHolder, $newLinkLi) {
-            var prototype =
-                '<input type="text" '
-            +   'id="form_allergens___name__" '
-            +   'name="form[allergens][__name__]" '
-            +   'value=""'
-            +   '/>'
-                ;
+            var prototype = $collectionHolder.data('prototype');
 
             var index = $collectionHolder.data('index');
 
