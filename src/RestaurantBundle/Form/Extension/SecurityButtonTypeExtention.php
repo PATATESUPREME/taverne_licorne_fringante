@@ -49,15 +49,16 @@ class SecurityButtonTypeExtention extends AbstractTypeExtension
         if (null === $grant || $this->authorization_checker->isGranted($grant)) {
             return;
         }
-
+        /*
         // Event listener not supported by button builder
-        /*$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $form = $event->getForm();
             if ($form->isRoot()) {
                 return;
             }
 
             $form->getParent()->remove($form->getName());
-        });*/
+        });
+        */
     }
 }
