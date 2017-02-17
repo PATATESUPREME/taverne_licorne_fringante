@@ -1,7 +1,7 @@
 Taverne de la licorne fringante
 ===============================
 
-Un projet Symfony créé le 31 Janvier 2017 par Kévin DESSIMOULIE et Quentin OLIVIER.
+Un projet Symfony de gestion de restaurant créé le 31 Janvier 2017 par Kévin DESSIMOULIE et Quentin OLIVIER.
 
 Problèmes rencontrés et leurs solutions
 ---------------------------------------
@@ -11,4 +11,5 @@ Problèmes rencontrés et leurs solutions
 * [Problème] Pas de serveur de mail:
 * [Problème] Cron de vérification des menus ayant aucun plat:
     * [Solution] Commande symfony qui va appeler un service qui envoie un des menus.
-* [Problème] Allergènes et plats des menus non enregistrés:
+* [Problème] Plats des menus non enregistrés:
+    * [Solution] Inverser les options inversedBy et mappedBy
