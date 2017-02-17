@@ -47,21 +47,25 @@ class DishController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             if ($form->get('in_validation')->isClicked()) {
                 $status = 'in_validation';
+
+                $this->mailToReviewers($dish);
             } elseif ($form->get('refuse')->isClicked()) {
                 $status = 'refuse';
             } elseif ($form->get('valid')->isClicked()) {
                 $status = 'valid';
+
+                $this->mailToWaiters($dish);
             } else {
                 $status = 'draft';
             }
 
             $dish->setStatus($status);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($dish);
-            $em->flush($dish);
+            $em->flush();
 
             return $this->redirectToRoute('dish_show', array('id' => $dish->getId()));
         }
@@ -101,19 +105,24 @@ class DishController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             if ($editForm->get('in_validation')->isClicked()) {
                 $status = 'in_validation';
+
+                $this->mailToReviewers($dish);
             } elseif ($editForm->get('refuse')->isClicked()) {
                 $status = 'refuse';
             } elseif ($editForm->get('valid')->isClicked()) {
                 $status = 'valid';
+
+                $this->mailToWaiters($dish);
             } else {
                 $status = 'draft';
             }
 
             $dish->setStatus($status);
 
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
 
             return $this->redirectToRoute('dish_edit', array('id' => $dish->getId()));
         }
@@ -135,6 +144,10 @@ class DishController extends Controller
     {
         $dish->setStatus($status);
 
+        if ('valid' === $status) {
+            $this->mailToWaiters($dish);
+        }
+
         $this->getDoctrine()->getManager()->flush();
 
         return $this->redirectToRoute('menu_show', array('id' => $dish->getId()));
@@ -154,7 +167,7 @@ class DishController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($dish);
-            $em->flush($dish);
+            $em->flush();
         }
 
         return $this->redirectToRoute('dish_index');
@@ -174,5 +187,75 @@ class DishController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @param Dish $dish
+     */
+    private function mailToWaiters(Dish $dish)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $possibleReviewer = $em
+            ->getRepository('RestaurantBundle:User')
+            ->getPossibleReviewerList();
+
+        $from = method_exists ( $this->get('security.token_storage')->getToken()->getUser() , 'getEmail' ) ?
+            $this->get('security.token_storage')->getToken()->getUser()->getEmail() :
+            'super.admin.taverne.licorne.fringante@gmail.com'
+        ;
+
+        $subject =
+            '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
+            $this->get('translator')->trans('dish_confirmed_subject', array(), 'mail');
+        $mail = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($from)
+            ->setTo($possibleReviewer)
+            ->setBody(
+                $this->renderView(
+                    'email/dish_confirmed.html.twig',
+                    array(
+                        'dish' => $dish)
+                ),
+                'text/html'
+            )
+        ;
+        $this->get('mailer')->send($mail);
+    }
+
+    /**
+     * @param Dish $dish
+     */
+    private function mailToReviewers(Dish $dish)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $possibleReviewer = $em
+            ->getRepository('RestaurantBundle:User')
+            ->getPossibleReviewerList();
+
+        $from = method_exists ( $this->get('security.token_storage')->getToken()->getUser() , 'getEmail' ) ?
+            $this->get('security.token_storage')->getToken()->getUser()->getEmail() :
+            'super.admin.taverne.licorne.fringante@gmail.com'
+        ;
+
+        $subject =
+            '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
+            $this->get('translator')->trans('dish_confirmation_subject', array(), 'mail');
+        $mail = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($from)
+            ->setTo($possibleReviewer)
+            ->setBody(
+                $this->renderView(
+                    'email/dish_confirmation.html.twig',
+                    array(
+                        'dish' => $dish)
+                ),
+                'text/html'
+            )
+        ;
+        $this->get('mailer')->send($mail);
     }
 }

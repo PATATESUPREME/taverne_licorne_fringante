@@ -5,7 +5,9 @@ namespace RestaurantBundle\Controller;
 use RestaurantBundle\Entity\Menu;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Menu controller.
@@ -34,6 +36,10 @@ class MenuController extends Controller
     /**
      * Creates a new menu entity.
      *
+     * @param Request $request
+     *
+     * @return Response
+     *
      * @Route("/new", name="menu_new")
      * @Method({"GET", "POST"})
      */
@@ -47,21 +53,25 @@ class MenuController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             if ($form->get('in_validation')->isClicked()) {
                 $status = 'in_validation';
+
+                $this->mailToReviewers($menu);
             } elseif ($form->get('refuse')->isClicked()) {
                 $status = 'refuse';
             } elseif ($form->get('valid')->isClicked()) {
                 $status = 'valid';
+
+                $this->mailToWaiters($menu);
             } else {
                 $status = 'draft';
             }
 
             $menu->setStatus($status);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($menu);
-            $em->flush($menu);
+            $em->flush();
 
             return $this->redirectToRoute('menu_show', array('id' => $menu->getId()));
         }
@@ -101,19 +111,24 @@ class MenuController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             if ($editForm->get('in_validation')->isClicked()) {
                 $status = 'in_validation';
+
+                $this->mailToReviewers($menu);
             } elseif ($editForm->get('refuse')->isClicked()) {
                 $status = 'refuse';
             } elseif ($editForm->get('valid')->isClicked()) {
                 $status = 'valid';
+
+                $this->mailToWaiters($menu);
             } else {
                 $status = 'draft';
             }
 
             $menu->setStatus($status);
 
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
 
             return $this->redirectToRoute('menu_edit', array('id' => $menu->getId()));
         }
@@ -135,6 +150,10 @@ class MenuController extends Controller
     {
         $menu->setStatus($status);
 
+        if ('valid' === $status) {
+            $this->mailToWaiters($menu);
+        }
+
         $this->getDoctrine()->getManager()->flush();
 
         return $this->redirectToRoute('menu_show', array('id' => $menu->getId()));
@@ -154,7 +173,7 @@ class MenuController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($menu);
-            $em->flush($menu);
+            $em->flush();
         }
 
         return $this->redirectToRoute('menu_index');
@@ -174,5 +193,75 @@ class MenuController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @param Menu $menu
+     */
+    private function mailToWaiters(Menu $menu)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $possibleReviewer = $em
+            ->getRepository('RestaurantBundle:User')
+            ->getPossibleWaiterList();
+
+        $from = method_exists ( $this->get('security.token_storage')->getToken()->getUser() , 'getEmail' ) ?
+            $this->get('security.token_storage')->getToken()->getUser()->getEmail() :
+            'super.admin.taverne.licorne.fringante@gmail.com'
+        ;
+
+        $subject =
+            '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
+            $this->get('translator')->trans('menu_confirmed_subject', array(), 'mail');
+        $mail = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($from)
+            ->setTo($possibleReviewer)
+            ->setBody(
+                $this->renderView(
+                    'email/menu_confirmed.html.twig',
+                    array(
+                        'menu' => $menu)
+                ),
+                'text/html'
+            )
+        ;
+        $this->get('mailer')->send($mail);
+    }
+
+    /**
+     * @param Menu $menu
+     */
+    private function mailToReviewers(Menu $menu)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $possibleReviewer = $em
+            ->getRepository('RestaurantBundle:User')
+            ->getPossibleReviewerList();
+
+        $from = method_exists ( $this->get('security.token_storage')->getToken()->getUser() , 'getEmail' ) ?
+            $this->get('security.token_storage')->getToken()->getUser()->getEmail() :
+            'super.admin.taverne.licorne.fringante@gmail.com'
+        ;
+
+        $subject =
+            '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
+            $this->get('translator')->trans('menu_confirmation_subject', array(), 'mail');
+        $mail = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($from)
+            ->setTo($possibleReviewer)
+            ->setBody(
+                $this->renderView(
+                    'email/menu_confirmation.html.twig',
+                    array(
+                        'menu' => $menu)
+                ),
+                'text/html'
+            )
+        ;
+        $this->get('mailer')->send($mail);
     }
 }

@@ -6,7 +6,19 @@
 
 {% block body %}
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.price) }}
+        {{ form_row(form.displayOrder) }}
+        {{ form_row(form.dishes) }}
+        {{ form_row(form.draft) }}
+        {{ form_row(form.in_validation) }}
+        {% if is_granted("ROLE_REVIEWER") %}
+            {{ form_row(form.refuse) }}
+            {{ form_row(form.valid) }}
+        {% else %}
+            {{ form_row(form.refuse, { 'attr': {'class': 'hidden-xs-up'}}) }}
+            {{ form_row(form.valid, { 'attr': {'class': 'hidden-xs-up'}}) }}
+        {% endif %}
     {{ form_end(form) }}
 
     <a class="btn btn-default float-left mr-1" href="{{ path('menu_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>

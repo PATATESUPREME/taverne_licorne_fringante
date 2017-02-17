@@ -87,7 +87,7 @@ class DefaultController extends Controller
             $subject =
                 '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
                 $this->get('translator')->trans('booking_confirmation_subject', array(), 'mail');
-            $message = \Swift_Message::newInstance()
+            $mail = \Swift_Message::newInstance()
                 ->setSubject($subject)
                 ->setFrom('taverne.licorne.fringante@gmail.com')
                 ->setTo($booking->getEmail())
@@ -100,7 +100,7 @@ class DefaultController extends Controller
                     'text/html'
                 )
             ;
-            $this->get('mailer')->send($message);
+            $this->get('mailer')->send($mail);
 
             return $this->redirectToRoute('default_index');
         }
