@@ -16,12 +16,26 @@
     <div class="row">
         <div class="col-12">
             <label>{{ 'menu_dishes'|trans({}, 'menu') }}</label>
-            <table class="table">
-                <tbody>
-                </tbody>
-            </table>
-
-            <a class="btn btn-default" href="{{ path('menu_front_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
+            <div class="row">
+                {% for dish in menu.dishes %}
+                    <div class="col-3">
+                        <div class="card px-2">
+                            <img class="card-img-top" src="{{ asset('resources/uploads/images/' ~ dish.image) }}" alt="Image of {{ dish.title }}">
+                            <div class="card-block">
+                                <h3 class="card-title">{{ dish.title }}</h3>
+                                <p class="card-text">
+                                    {{ dish.description }}
+                                </p>
+                                <a href="{{ path('dish_front_show', { 'id': dish.id }) }}" class="btn btn-primary">
+                                    {{ 'detail_button'|trans({}, 'general') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
+
+    <a class="btn btn-default" href="{{ path('menu_front_index') }}">{{ 'return_button'|trans({}, 'general') }}</a>
 {% endblock %}

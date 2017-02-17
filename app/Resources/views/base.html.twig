@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{ 'website_name'|trans({}, 'general') }}{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('resources/css/jquery-ui.min.css') }}" />
             <link rel="stylesheet" href="{{ asset('resources/css/jquery.timepicker.css') }}" />

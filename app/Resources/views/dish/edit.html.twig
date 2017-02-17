@@ -14,9 +14,9 @@
         {{ form_row(edit_form.category) }}
         <div class="form-group">
             <label class="control-label" for="allergen-fields-list">{{ 'dish_allergens'|trans({}, 'dish') }}</label>
-            <ul class="allergens" data-prototype="{{ form_widget(edit_form.allergens.vars.prototype)|e }}">
+            <ul class="allergens list-group" data-prototype="{{ form_widget(edit_form.allergens.vars.prototype)|e }}">
                 {% for allergen in edit_form.allergens %}
-                    <li>
+                    <li class="list-group-item">
                         {{ form_errors(allergen) }}
                         {{ form_widget(allergen) }}
                     </li>
@@ -72,8 +72,8 @@
         // Add Allergen
         var $collectionHolder;
 
-        var $addAllergenLink = $('<a href="#" class="add_allergen_link">{{ 'dish_add_allergen'|trans({}, 'dish') }}</a>');
-        var $newLinkLi = $('<li></li>').append($addAllergenLink);
+        var $addAllergenLink = $('<a href="#" class="btn btn-warning add_allergen_link">{{ 'dish_add_allergen'|trans({}, 'dish') }}</a>');
+        var $newLinkLi = $('<li class="list-group-item"></li>').append($addAllergenLink);
 
         jQuery(document).ready(function() {
             $collectionHolder = $('ul.allergens');
@@ -97,7 +97,7 @@
 
             $collectionHolder.data('index', index + 1);
 
-            var $newFormLi = $('<li></li>').append(newForm);
+            var $newFormLi = $('<li class="list-group-item"></li>').append(newForm);
             $newLinkLi.before($newFormLi);
         }
     </script>
