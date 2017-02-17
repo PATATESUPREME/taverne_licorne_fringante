@@ -3,6 +3,8 @@ Taverne de la licorne fringante
 
 Un projet Symfony de gestion de restaurant créé le 31 Janvier 2017 par Kévin DESSIMOULIE et Quentin OLIVIER.
 
+Score SensioLabsInsight: https://insight.sensiolabs.com/projects/22d17812-923f-450a-9cbf-f01582579c88/analyses/4
+
 Problèmes rencontrés et leurs solutions
 ---------------------------------------
 * [Problème] Pour la gestion des boutons de validation pour l'éditeur:
