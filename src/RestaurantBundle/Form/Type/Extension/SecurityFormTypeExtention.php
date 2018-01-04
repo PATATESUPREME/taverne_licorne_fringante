@@ -1,6 +1,6 @@
 <?php
 
-namespace RestaurantBundle\Form\Extension;
+namespace RestaurantBundle\Form\Type\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -19,7 +19,9 @@ class SecurityFormTypeExtention extends AbstractTypeExtension
     private $authorization_checker;
 
     /**
-     * Object constructor
+     * SecurityFormTypeExtention constructor.
+     *
+     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorization_checker
      */
     public function __construct(AuthorizationCheckerInterface $authorization_checker)
     {

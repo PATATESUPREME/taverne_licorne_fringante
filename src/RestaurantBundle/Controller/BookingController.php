@@ -5,7 +5,10 @@ namespace RestaurantBundle\Controller;
 use RestaurantBundle\Entity\Booking;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Booking controller.
@@ -34,19 +37,23 @@ class BookingController extends Controller
     /**
      * Creates a new booking entity.
      *
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     *
      * @Route("/new", name="booking_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
         $booking = new Booking();
-        $form = $this->createForm('RestaurantBundle\Form\BookingType', $booking);
+        $form = $this->createForm('RestaurantBundle\Form\Type\BookingType', $booking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($booking);
-            $em->flush($booking);
+            $em->flush();
 
             $subject =
                 '[' . $this->get('translator')->trans('website_name', array(), 'general') . ']' .
@@ -78,6 +85,10 @@ class BookingController extends Controller
     /**
      * Finds and displays a booking entity.
      *
+     * @param Booking $booking
+     *
+     * @return Response
+     *
      * @Route("/{id}", name="booking_show")
      * @Method("GET")
      */
@@ -94,13 +105,18 @@ class BookingController extends Controller
     /**
      * Displays a form to edit an existing booking entity.
      *
+     * @param Request $request
+     * @param Booking $booking
+     *
+     * @return RedirectResponse|Response
+     *
      * @Route("/{id}/edit", name="booking_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Booking $booking)
     {
         $deleteForm = $this->createDeleteForm($booking);
-        $editForm = $this->createForm('RestaurantBundle\Form\BookingType', $booking);
+        $editForm = $this->createForm('RestaurantBundle\Form\Type\BookingType', $booking);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -119,6 +135,11 @@ class BookingController extends Controller
     /**
      * Deletes a booking entity.
      *
+     * @param Request $request
+     * @param Booking $booking
+     *
+     * @return RedirectResponse
+     *
      * @Route("/{id}", name="booking_delete")
      * @Method("DELETE")
      */
@@ -130,7 +151,7 @@ class BookingController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($booking);
-            $em->flush($booking);
+            $em->flush();
         }
 
         return $this->redirectToRoute('booking_index');

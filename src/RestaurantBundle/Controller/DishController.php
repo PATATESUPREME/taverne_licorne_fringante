@@ -6,8 +6,10 @@ use RestaurantBundle\Entity\Dish;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Dish controller.
@@ -34,7 +36,38 @@ class DishController extends Controller
     }
 
     /**
+     * Gets the status of a dish.
+     *
+     * @param Form  $form
+     * @param Dish $dish
+     *
+     * @return string
+     */
+    private function getDishStatus(Form $form, Dish $dish)
+    {
+        if ($form->get('in_validation')->isClicked()) {
+            $status = 'in_validation';
+
+            $this->get('restaurant.mailer')->dishMailToReviewers($dish);
+        } elseif ($form->get('refuse')->isClicked()) {
+            $status = 'refuse';
+        } elseif ($form->get('valid')->isClicked()) {
+            $status = 'valid';
+
+            $this->get('restaurant.mailer')->dishMailToWaiters($dish);
+        } else {
+            $status = 'draft';
+        }
+
+        return $status;
+    }
+
+    /**
      * Creates a new dish entity.
+     *
+     * @param Request $request
+     *
+     * @return Response
      *
      * @Route("/new", name="dish_new")
      * @Method({"GET", "POST"})
@@ -42,28 +75,17 @@ class DishController extends Controller
     public function newAction(Request $request)
     {
         $dish = new Dish();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $user = $this->getUser();
         $dish->setAuthor($user->getUsername());
 
-        $form = $this->createForm('RestaurantBundle\Form\DishType', $dish);
+        $form = $this->createForm('RestaurantBundle\Form\Type\DishType', $dish);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            if ($form->get('in_validation')->isClicked()) {
-                $status = 'in_validation';
+            $status = $this->getDishStatus($form, $dish);
 
-                $this->get('restaurant.mailer')->dishMailToReviewers($dish);
-            } elseif ($form->get('refuse')->isClicked()) {
-                $status = 'refuse';
-            } elseif ($form->get('valid')->isClicked()) {
-                $status = 'valid';
-
-                $this->get('restaurant.mailer')->dishMailToWaiters($dish);
-            } else {
-                $status = 'draft';
-            }
             if (!empty($dish->getImage())) {
                 $file = $dish->getImage();
                 $fileName = $this->get('restaurant.uploader')->upload($file);
@@ -87,6 +109,10 @@ class DishController extends Controller
     /**
      * Finds and displays a dish entity.
      *
+     * @param Dish $dish
+     *
+     * @return Response
+     *
      * @Route("/{id}", name="dish_show")
      * @Method("GET")
      */
@@ -103,6 +129,11 @@ class DishController extends Controller
     /**
      * Displays a form to edit an existing dish entity.
      *
+     * @param Request $request
+     * @param Dish    $dish
+     *
+     * @return Response
+     *
      * @Route("/{id}/edit", name="dish_edit")
      * @Method({"GET", "POST"})
      */
@@ -114,24 +145,13 @@ class DishController extends Controller
             );
         }
         $deleteForm = $this->createDeleteForm($dish);
-        $editForm = $this->createForm('RestaurantBundle\Form\DishType', $dish);
+        $editForm = $this->createForm('RestaurantBundle\Form\Type\DishType', $dish);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            if ($editForm->get('in_validation')->isClicked()) {
-                $status = 'in_validation';
 
-                $this->get('restaurant.mailer')->dishMailToReviewers($dish);
-            } elseif ($editForm->get('refuse')->isClicked()) {
-                $status = 'refuse';
-            } elseif ($editForm->get('valid')->isClicked()) {
-                $status = 'valid';
-
-                $this->get('restaurant.mailer')->dishMailToWaiters($dish);
-            } else {
-                $status = 'draft';
-            }
+            $status = $this->getDishStatus($editForm, $dish);
 
             $dish->setStatus($status);
 
@@ -149,6 +169,11 @@ class DishController extends Controller
 
     /**
      * Change the status of the entity.
+     *
+     * @param Dish   $dish
+     * @param string $status
+     *
+     * @return Response
      *
      * @Route("/{id}/validation/{status}", name="dish_validation")
      * @Method("GET")
@@ -168,6 +193,11 @@ class DishController extends Controller
 
     /**
      * Deletes a dish entity.
+     *
+     * @param Request $request
+     * @param Dish    $dish
+     *
+     * @return Response
      *
      * @Route("/{id}", name="dish_delete")
      * @Method("DELETE")

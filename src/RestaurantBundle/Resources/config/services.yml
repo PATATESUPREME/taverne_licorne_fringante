@@ -1,19 +1,19 @@
 services:
   restaurant.security_button_type_extension:
-    class: RestaurantBundle\Form\Extension\SecurityButtonTypeExtention
+    class: RestaurantBundle\Form\Type\Extension\SecurityButtonTypeExtention
     arguments: [ "@security.authorization_checker" ]
     tags:
       - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
 
   restaurant.security_form_type_extension:
-    class: RestaurantBundle\Form\Extension\SecurityFormTypeExtention
+    class: RestaurantBundle\Form\Type\Extension\SecurityFormTypeExtention
     arguments: [ "@security.authorization_checker" ]
     tags:
       - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
   restaurant.mailer:
     class: RestaurantBundle\Services\MailerService
-    arguments: [ "@service_container" ]
+    arguments: [ "@doctrine.orm.entity_manager", "@mailer", "@security.token_storage", "@translator", "@templating" ]
 
   restaurant.uploader:
           class: RestaurantBundle\Services\FileUploaderService

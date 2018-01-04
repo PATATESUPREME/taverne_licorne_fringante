@@ -8,7 +8,7 @@ use RestaurantBundle\Entity\Menu;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
@@ -76,7 +76,7 @@ class DefaultController extends Controller
     public function frontNewAction(Request $request)
     {
         $booking = new Booking();
-        $form = $this->createForm('RestaurantBundle\Form\BookingType', $booking);
+        $form = $this->createForm('RestaurantBundle\Form\Type\BookingType', $booking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -47,7 +47,7 @@ class UserController extends Controller
     {
         $user = new User();
         $user->setSalt('salt');
-        $form = $this->createForm('RestaurantBundle\Form\UserType', $user);
+        $form = $this->createForm('RestaurantBundle\Form\Type\UserType', $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -58,7 +58,7 @@ class UserController extends Controller
             $user->setPassword($encoded);
 
             $em->persist($user);
-            $em->flush($user);
+            $em->flush();
 
             $this->addFlash(
                 'notice',
@@ -108,7 +108,7 @@ class UserController extends Controller
     public function editAction(Request $request, User $user)
     {
         $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm('RestaurantBundle\Form\UserType', $user);
+        $editForm = $this->createForm('RestaurantBundle\Form\Type\UserType', $user);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -148,7 +148,7 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
-            $em->flush($user);
+            $em->flush();
         }
 
         return $this->redirectToRoute('admin_user_index');

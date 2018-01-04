@@ -1,6 +1,6 @@
 <?php
 
-namespace RestaurantBundle\Form\Extension;
+namespace RestaurantBundle\Form\Type\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -17,7 +17,9 @@ class SecurityButtonTypeExtention extends AbstractTypeExtension
     private $authorization_checker;
 
     /**
-     * Object constructor
+     * SecurityButtonTypeExtention constructor.
+     *
+     * @param AuthorizationCheckerInterface $authorization_checker
      */
     public function __construct(AuthorizationCheckerInterface $authorization_checker)
     {

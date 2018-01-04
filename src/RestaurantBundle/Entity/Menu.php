@@ -2,6 +2,8 @@
 
 namespace RestaurantBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -196,17 +198,17 @@ class Menu
      */
     public function __construct()
     {
-        $this->dishes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dishes = new ArrayCollection();
     }
 
     /**
      * Add dish
      *
-     * @param \RestaurantBundle\Entity\Dish $dish
+     * @param Dish $dish
      *
      * @return Menu
      */
-    public function addDish(\RestaurantBundle\Entity\Dish $dish)
+    public function addDish(Dish $dish)
     {
         $this->dishes[] = $dish;
 
@@ -216,9 +218,9 @@ class Menu
     /**
      * Remove dish
      *
-     * @param \RestaurantBundle\Entity\Dish $dish
+     * @param Dish $dish
      */
-    public function removeDish(\RestaurantBundle\Entity\Dish $dish)
+    public function removeDish(Dish $dish)
     {
         $this->dishes->removeElement($dish);
     }
@@ -226,7 +228,7 @@ class Menu
     /**
      * Get dishes
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getDishes()
     {

@@ -6,6 +6,7 @@ use RestaurantBundle\Entity\Menu;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,6 +35,33 @@ class MenuController extends Controller
     }
 
     /**
+     * Gets the status of a dish.
+     *
+     * @param Form $form
+     * @param Menu $menu
+     *
+     * @return string
+     */
+    private function getMenuStatus(Form $form, Menu $menu)
+    {
+        if ($form->get('in_validation')->isClicked()) {
+            $status = 'in_validation';
+
+            $this->get('restaurant.mailer')->menuMailToReviewers($menu);
+        } elseif ($form->get('refuse')->isClicked()) {
+            $status = 'refuse';
+        } elseif ($form->get('valid')->isClicked()) {
+            $status = 'valid';
+
+            $this->get('restaurant.mailer')->menuMailToWaiters($menu);
+        } else {
+            $status = 'draft';
+        }
+
+        return $status;
+    }
+
+    /**
      * Creates a new menu entity.
      *
      * @param Request $request
@@ -46,27 +74,16 @@ class MenuController extends Controller
     public function newAction(Request $request)
     {
         $menu = new Menu();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $user = $this->getUser();
         $menu->setAuthor($user->getUsername());
 
-        $form = $this->createForm('RestaurantBundle\Form\MenuType', $menu);
+        $form = $this->createForm('RestaurantBundle\Form\Type\MenuType', $menu);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            if ($form->get('in_validation')->isClicked()) {
-                $status = 'in_validation';
 
-                $this->get('restaurant.mailer')->menuMailToReviewers($menu);
-            } elseif ($form->get('refuse')->isClicked()) {
-                $status = 'refuse';
-            } elseif ($form->get('valid')->isClicked()) {
-                $status = 'valid';
-
-                $this->get('restaurant.mailer')->menuMailToWaiters($menu);
-            } else {
-                $status = 'draft';
-            }
+            $status = $this->getMenuStatus($form, $menu);
 
             $menu->setStatus($status);
 
@@ -85,6 +102,10 @@ class MenuController extends Controller
     /**
      * Finds and displays a menu entity.
      *
+     * @param Menu $menu
+     *
+     * @return Response
+     *
      * @Route("/{id}", name="menu_show")
      * @Method("GET")
      */
@@ -101,30 +122,24 @@ class MenuController extends Controller
     /**
      * Displays a form to edit an existing menu entity.
      *
+     * @param Request $request
+     * @param Menu $menu
+     *
+     * @return Response
+     *
      * @Route("/{id}/edit", name="menu_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Menu $menu)
     {
         $deleteForm = $this->createDeleteForm($menu);
-        $editForm = $this->createForm('RestaurantBundle\Form\MenuType', $menu);
+        $editForm = $this->createForm('RestaurantBundle\Form\Type\MenuType', $menu);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            if ($editForm->get('in_validation')->isClicked()) {
-                $status = 'in_validation';
 
-                $this->get('restaurant.mailer')->menuMailToReviewers($menu);
-            } elseif ($editForm->get('refuse')->isClicked()) {
-                $status = 'refuse';
-            } elseif ($editForm->get('valid')->isClicked()) {
-                $status = 'valid';
-
-                $this->get('restaurant.mailer')->menuMailToWaiters($menu);
-            } else {
-                $status = 'draft';
-            }
+            $status = $this->getMenuStatus($editForm, $menu);
 
             $menu->setStatus($status);
 
@@ -142,6 +157,11 @@ class MenuController extends Controller
 
     /**
      * Change the status of the entity.
+     *
+     * @param Menu $menu
+     * @param string $status
+     *
+     * @return Response
      *
      * @Route("/{id}/validation/{status}", name="menu_validation")
      * @Method("GET")
@@ -161,6 +181,11 @@ class MenuController extends Controller
 
     /**
      * Deletes a menu entity.
+     *
+     * @param Request $request
+     * @param Menu $menu
+     *
+     * @return Response
      *
      * @Route("/{id}", name="menu_delete")
      * @Method("DELETE")
@@ -184,7 +209,7 @@ class MenuController extends Controller
      *
      * @param Menu $menu The menu entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createDeleteForm(Menu $menu)
     {

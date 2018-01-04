@@ -2,29 +2,54 @@
 
 namespace RestaurantBundle\Services;
 
+use Doctrine\ORM\EntityManager;
 use RestaurantBundle\Entity\Dish;
 use RestaurantBundle\Entity\Menu;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class MailerService
 {
+
+    /**
+     * @var EntityManager
+     */
     private $em;
+
+    /**
+     * @var \Swift_Mailer
+     */
     private $mailer;
+
+    /**
+     * @var TokenStorageInterface
+     */
     private $token_storage;
+
+    /**
+     * @var TranslatorInterface
+     */
     private $translator;
+
+    /**
+     * @var TwigEngine
+     */
     private $templating;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(EntityManager $em, \Swift_Mailer $swiftMailer, TokenStorageInterface $tokenStorage, TranslatorInterface $translator, TwigEngine $twigEnvironment)
     {
-        $this->em = $container->get('doctrine.orm.entity_manager');
-        $this->mailer = $container->get('mailer');
-        $this->token_storage = $container->get('security.token_storage');
-        $this->translator = $container->get('translator');
-        $this->templating = $container->get('templating');
+        $this->em = $em;
+        $this->mailer = $swiftMailer;
+        $this->token_storage = $tokenStorage;
+        $this->translator = $translator;
+        $this->templating = $twigEnvironment;
     }
 
     /**
-     * @param Dish $dish
+     * @param \RestaurantBundle\Entity\Dish $dish
+     *
+     * @throws \Twig\Error\Error
      */
     public function dishMailToWaiters(Dish $dish)
     {
@@ -57,7 +82,9 @@ class MailerService
     }
 
     /**
-     * @param Dish $dish
+     * @param \RestaurantBundle\Entity\Dish $dish
+     *
+     * @throws \Twig\Error\Error
      */
     public function dishMailToReviewers(Dish $dish)
     {
@@ -90,7 +117,9 @@ class MailerService
     }
 
     /**
-     * @param Menu $menu
+     * @param \RestaurantBundle\Entity\Menu $menu
+     *
+     * @throws \Twig\Error\Error
      */
     public function menuMailToWaiters(Menu $menu)
     {
@@ -123,7 +152,9 @@ class MailerService
     }
 
     /**
-     * @param Menu $menu
+     * @param \RestaurantBundle\Entity\Menu $menu
+     *
+     * @throws \Twig\Error\Error
      */
     public function menuMailToReviewers(Menu $menu)
     {
@@ -156,7 +187,7 @@ class MailerService
     }
 
     /**
-     *
+     * @throws \Twig\Error\Error
      */
     public function startMenuVerification()
     {
