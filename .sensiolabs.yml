@@ -1,0 +1,45 @@
+# Configure the PHP version SensioLabsInsight should use to analyze
+# your project. It can be defined to 5, 7.0, or 7.1. If not
+# present, it will prefer 7.1 but fallback to 5 if errored.
+php_version: 7.1
+
+# Configure rules.
+rules:
+    # Disabled rules
+    symfony.use_php_database_function:
+        enabled: false
+    php.duplicated_code:
+        enabled: false
+
+    # Configured rules
+    php.class_too_long:
+        max_length: 2000
+        threshold:  10
+
+# This section will be executed before installing dependencies.
+# You should configure here what is needed for Composer to run without
+# issue: install libraries, prepare the database, etc.
+pre_composer_script: |
+    #!/bin/bash
+    cp app/config/parameters.yml.dist app/config/parameters.yml
+
+# Configure the directories excluded from the analysis. By default,
+# this setting excldues directories commonly used to store tests
+# and third-party libraries.
+global_exclude_dirs:
+    - vendor
+    - vendors
+    - test
+    - tests
+    - Tests
+    - spec
+    - features
+    - Fixtures
+    - DataFixtures
+    - var
+
+# Configure patterns used by SensioLabsInsight to exclude specific
+# files and directories.
+exclude_patterns:
+    - bin/symfony_requirements.php
+    - web/app_*.php
